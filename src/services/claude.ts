@@ -17,7 +17,7 @@ export const ClaudeVisionService = {
   async imageToBase64(uri: string): Promise<string> {
     try {
       const base64 = await FileSystem.readAsStringAsync(uri, {
-        encoding: FileSystem.EncodingType.Base64,
+        encoding: 'base64',
       });
       return base64;
     } catch (error) {
