@@ -92,9 +92,9 @@ Replace placeholder images with actual app screenshots:
 ### Update Contact Information
 
 Replace placeholder emails in legal pages:
-- `privacy@gauge.app`
-- `support@gauge.app`
-- `legal@gauge.app`
+- `privacy@gaugestyle.app`
+- `support@gaugestyle.app`
+- `legal@gaugestyle.app`
 
 ### Update App Store Links
 
