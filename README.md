@@ -19,6 +19,7 @@ This is a sophisticated, responsive landing page that matches the GAUGE app's pr
 - `script.js` - JavaScript for interactivity and animations
 - `privacy-policy.html` - Comprehensive privacy policy (Apple & Google compliant)
 - `terms-of-service.html` - Complete terms of service (Apple & Google compliant)
+- `logo.png` - GAUGE logo image (required - add your logo file)
 
 ## Design System
 
@@ -73,6 +74,14 @@ The website uses the same design tokens as the GAUGE app:
 
 ## Customization
 
+### Add Logo
+
+Add your GAUGE logo file:
+- Place `logo.png` in the root directory
+- Logo should be a PNG with transparent background
+- Recommended size: 64x64px to 128x128px (will be scaled to 32px height)
+- The logo should be the gold/bronze geometric symbol with "GAUGE" text
+
 ### Update Screenshots
 
 Replace placeholder images with actual app screenshots:
@@ -114,8 +123,10 @@ The website can be deployed to:
 
 ## Notes
 
+- **Logo Required**: Add `logo.png` to the root directory (the website references it)
 - Placeholder screenshots use `via.placeholder.com` - replace with actual app screenshots
-- App Store and Google Play download buttons link to `#` - update with actual store URLs
+- App Store and Google Play badges use official images from Apple and Google CDNs
+- Download badge links point to `#` - update with actual App Store and Google Play URLs
 - Email addresses are placeholders - update with your actual support emails
 - Legal pages reference jurisdiction placeholders - update with your actual legal information
 

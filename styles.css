@@ -117,10 +117,17 @@ body {
     font-weight: 700;
     color: var(--cream);
     text-decoration: none;
+    transition: opacity 0.3s ease;
 }
 
-.logo-icon {
-    font-size: 32px;
+.logo:hover {
+    opacity: 0.9;
+}
+
+.logo-image {
+    height: 32px;
+    width: auto;
+    display: block;
 }
 
 .logo-text {
@@ -669,45 +676,31 @@ body {
     flex-direction: column;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
+    align-items: flex-start;
 }
 
-.download-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    background: var(--wood-medium);
-    border: 2px solid var(--gold);
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--radius-lg);
+.download-badge {
+    display: inline-block;
     text-decoration: none;
-    transition: all 0.3s ease;
-    max-width: 300px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    max-width: 200px;
 }
 
-.download-btn:hover {
-    background: rgba(212, 175, 55, 0.1);
-    border-color: var(--gold-light);
-    transform: translateX(4px);
+.download-badge:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
 }
 
-.download-icon {
-    font-size: 32px;
+.app-store-badge {
+    height: 60px;
+    width: auto;
+    display: block;
 }
 
-.download-text-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.download-label {
-    font-size: var(--font-size-caption);
-    color: var(--ivory);
-}
-
-.download-store {
-    font-size: var(--font-size-body);
-    font-weight: 600;
-    color: var(--cream);
+.google-play-badge {
+    height: 60px;
+    width: auto;
+    display: block;
 }
 
 .download-note {
@@ -919,6 +912,23 @@ body {
     .btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .download-buttons {
+        align-items: center;
+    }
+
+    .download-badge {
+        max-width: 180px;
+    }
+
+    .app-store-badge,
+    .google-play-badge {
+        height: 50px;
+    }
+
+    .logo-image {
+        height: 28px;
     }
 }
 
