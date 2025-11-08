@@ -1,0 +1,64 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.env
+
+# App code (should not be in website repo)
+src/
+App.tsx
+app.json
+app.config.js
+babel.config.js
+tsconfig.json
+package.json
+package-lock.json
+node_modules/
+.expo/
+.expo-shared/
+
+# Build files
+dist/
+build/
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Documentation that's not for the website
+*.md
+!README.md
+
+# Any app-specific files
+assets/
+images/
+docs/
+archive/
+
