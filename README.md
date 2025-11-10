@@ -38,7 +38,7 @@ The website uses the same design tokens as the GAUGE app:
 2. **Features**: 6 key features with icons and descriptions
 3. **How It Works**: 4-step process with visual guides
 4. **Pricing**: Free vs Premium comparison
-5. **Download**: App Store and Google Play CTAs
+5. **Download**: App Store CTA
 6. **Footer**: Links to legal pages and contact info
 
 ### Legal Pages
