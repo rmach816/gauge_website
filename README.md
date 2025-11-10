@@ -98,7 +98,7 @@ Replace placeholder emails in legal pages:
 
 ### Update App Store Links
 
-Replace `#` placeholders in download buttons with actual App Store and Google Play links.
+Replace `#` placeholder in download button with actual App Store link.
 
 ### Update Jurisdiction
 
@@ -125,8 +125,8 @@ The website can be deployed to:
 
 - **Logo Required**: Add `logo.png` to the root directory (the website references it)
 - Placeholder screenshots use `via.placeholder.com` - replace with actual app screenshots
-- App Store and Google Play badges use official images from Apple and Google CDNs
-- Download badge links point to `#` - update with actual App Store and Google Play URLs
+- App Store badge uses official image from Apple CDN
+- Download badge link points to `#` - update with actual App Store URL
 - Email addresses are placeholders - update with your actual support emails
 - Legal pages reference jurisdiction placeholders - update with your actual legal information
 
