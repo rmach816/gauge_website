@@ -4,10 +4,10 @@
    ============================================ */
 
 :root {
-    /* Color Palette - Matching App */
-    --wood-dark: #3E2723;
-    --wood-medium: #5D4037;
-    --wood-light: #8D6E63;
+    /* Color Palette - Modern Gray Theme (Matching App) */
+    --charcoal-dark: #1E1E1E;
+    --slate-medium: #2A2A2A;
+    --graphite-light: #404040;
     --cream: #F5F5DC;
     --ivory: #FFF8DC;
     --parchment: #FDF6E3;
@@ -24,6 +24,11 @@
     --gray-dark: #505050;
     --white: #FFFFFF;
     --black: #000000;
+    
+    /* Backward compatibility aliases */
+    --wood-dark: var(--charcoal-dark);
+    --wood-medium: var(--slate-medium);
+    --wood-light: var(--graphite-light);
 
     /* Spacing */
     --spacing-xs: 4px;
@@ -76,7 +81,7 @@ body {
     font-size: var(--font-size-body);
     line-height: 1.6;
     color: var(--navy);
-    background: linear-gradient(180deg, var(--wood-dark) 0%, #1A0F0A 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0F0F0F 100%);
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -96,7 +101,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(62, 39, 35, 0.95);
+    background: rgba(30, 30, 30, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: var(--spacing-md) 0;
@@ -229,7 +234,7 @@ body {
 
 .hero {
     padding: 120px 0 var(--spacing-xxxl);
-    background: linear-gradient(180deg, var(--wood-dark) 0%, #1A0F0A 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0F0F0F 100%);
     position: relative;
     overflow: hidden;
 }
@@ -321,7 +326,7 @@ body {
 .phone-frame {
     width: 300px;
     height: 600px;
-    background: var(--wood-medium);
+    background: var(--slate-medium);
     border-radius: 40px;
     padding: 12px;
     box-shadow: var(--shadow-large);
@@ -333,7 +338,7 @@ body {
     height: 100%;
     border-radius: 32px;
     overflow: hidden;
-    background: var(--wood-dark);
+    background: var(--charcoal-dark);
 }
 
 .phone-screen img {
@@ -485,7 +490,7 @@ body {
 
 .how-it-works {
     padding: var(--spacing-xxxl) 0;
-    background: linear-gradient(180deg, var(--wood-medium) 0%, var(--wood-dark) 100%);
+    background: linear-gradient(180deg, var(--slate-medium) 0%, var(--charcoal-dark) 100%);
     color: var(--cream);
 }
 
@@ -653,7 +658,7 @@ body {
 
 .download {
     padding: var(--spacing-xxxl) 0;
-    background: linear-gradient(180deg, var(--wood-dark) 0%, #1A0F0A 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0F0F0F 100%);
     color: var(--cream);
 }
 
@@ -743,7 +748,7 @@ body {
    ============================================ */
 
 .footer {
-    background: var(--wood-dark);
+    background: var(--charcoal-dark);
     color: var(--cream);
     padding: var(--spacing-xxxl) 0 var(--spacing-xl);
     border-top: 1px solid rgba(212, 175, 55, 0.2);
@@ -815,7 +820,7 @@ body {
         top: 70px;
         left: 0;
         right: 0;
-        background: var(--wood-dark);
+        background: var(--charcoal-dark);
         flex-direction: column;
         padding: var(--spacing-lg);
         gap: var(--spacing-md);
