@@ -26,6 +26,11 @@ export const useWardrobe = () => {
     }
   }, []);
 
+  // Expose loadItems for manual refresh (used with useFocusEffect)
+  const refresh = useCallback(() => {
+    return loadItems();
+  }, [loadItems]);
+
   // Filter items by category and search query
   const filteredItems = useMemo(() => {
     let filtered = items;

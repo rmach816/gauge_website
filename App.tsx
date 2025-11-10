@@ -6,6 +6,7 @@ import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { OfflineBanner } from './src/components/OfflineBanner';
 import { CrashReportingService } from './src/services/crashReporting';
 import { ProfileMigration } from './src/utils/profileMigration';
+import { PremiumProvider } from './src/contexts/PremiumContext';
 // Import contrast test to run in development mode
 import './src/utils/contrastTest';
 
@@ -21,9 +22,11 @@ export default function App() {
   return (
     <ErrorBoundary>
       <SafeAreaProvider>
-        <StatusBar style="light" />
-        <OfflineBanner />
-        <AppNavigator />
+        <PremiumProvider>
+          <StatusBar style="light" />
+          <OfflineBanner />
+          <AppNavigator />
+        </PremiumProvider>
       </SafeAreaProvider>
     </ErrorBoundary>
   );

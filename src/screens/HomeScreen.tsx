@@ -14,7 +14,7 @@ import { WoodBackground } from '../components/WoodBackground';
 import { GoldButton } from '../components/GoldButton';
 import { SetupReminderBanner } from '../components/SetupReminderBanner';
 import { Icon, AppIcons } from '../components/Icon';
-import { PremiumService } from '../services/premium';
+import { usePremium } from '../contexts/PremiumContext';
 import { StorageService } from '../services/storage';
 import { RootStackParamList } from '../types';
 import {
@@ -37,27 +37,12 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
  */
 export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const [premiumStatus, setPremiumStatus] = useState<{ 
-    isPremium: boolean; 
-    checksRemaining: number 
-  }>({ 
-    isPremium: false, 
-    checksRemaining: 10 
-  });
+  const { isPremium, checksRemaining } = usePremium();
   const [userLastName, setUserLastName] = useState<string>('');
 
   useEffect(() => {
-    loadPremiumStatus();
     loadUserName();
   }, []);
-
-  const loadPremiumStatus = async () => {
-    const status = await PremiumService.getStatus();
-    setPremiumStatus({
-      isPremium: status.isPremium,
-      checksRemaining: status.checksRemaining ?? 10,
-    });
-  };
 
   const loadUserName = async () => {
     try {
@@ -124,7 +109,7 @@ export const HomeScreen: React.FC = () => {
                   Premium • Your personal style expert
                 </Text>
               </View>
-              {!premiumStatus.isPremium && (
+              {!isPremium && (
                 <View style={styles.premiumBadge}>
                   <Text style={styles.premiumBadgeText}>Premium</Text>
                 </View>
@@ -144,9 +129,9 @@ export const HomeScreen: React.FC = () => {
               <View style={styles.actionButtonContent}>
                 <Text style={styles.actionButtonTitle}>Quick Style Check</Text>
                 <Text style={styles.actionButtonSubtitle}>
-                  {premiumStatus.isPremium
+                  {isPremium
                     ? 'Unlimited'
-                    : `Free: ${premiumStatus.checksRemaining} remaining`}
+                    : `Free: ${checksRemaining} remaining`}
                 </Text>
               </View>
             </TouchableOpacity>

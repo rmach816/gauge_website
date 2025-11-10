@@ -9,6 +9,8 @@ interface RetryOptions {
   maxDelay?: number;
   backoffMultiplier?: number;
   retryableErrors?: (error: any) => boolean;
+  onRetry?: (attempt: number, error: any) => void;
+  onFinalFailure?: (error: any) => void;
 }
 
 const DEFAULT_OPTIONS: Required<Omit<RetryOptions, 'retryableErrors'>> & { retryableErrors?: (error: any) => boolean } = {
@@ -69,6 +71,13 @@ export async function retryWithBackoff<T>(
         break;
       }
       
+      // Call onRetry callback if provided
+      if (options.onRetry) {
+        options.onRetry(attempt, error);
+      }
+      
+      console.log(`[Retry] Attempt ${attempt}/${opts.maxAttempts} failed, retrying in ${delay}ms...`, error);
+      
       // Wait before retrying
       await new Promise(resolve => setTimeout(resolve, delay));
       
@@ -77,6 +86,30 @@ export async function retryWithBackoff<T>(
     }
   }
   
+  // Call onFinalFailure callback if provided
+  if (options.onFinalFailure) {
+    options.onFinalFailure(lastError);
+  }
+  
+  console.error(`[Retry] All ${opts.maxAttempts} attempts failed:`, lastError);
   throw lastError;
+}
+
+/**
+ * Convenience wrapper with sensible defaults for API calls
+ */
+export async function retryApiCall<T>(
+  fn: () => Promise<T>,
+  context?: string
+): Promise<T> {
+  return retryWithBackoff(fn, {
+    maxAttempts: 3,
+    initialDelay: 1000,
+    maxDelay: 5000,
+    backoffMultiplier: 2,
+    onRetry: (attempt, error) => {
+      console.log(`[${context || 'API'}] Retry attempt ${attempt}:`, error.message);
+    },
+  });
 }
 

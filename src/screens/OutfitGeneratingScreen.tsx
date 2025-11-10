@@ -17,6 +17,7 @@ import { StorageService } from '../services/storage';
 import { HistoryService } from '../services/history';
 import { validateApiKey } from '../config/api';
 import { getContextualError, ErrorContext } from '../utils/errorMessages';
+import { retryApiCall } from '../utils/retry';
 import {
   RootStackParamList,
   Occasion,
@@ -110,40 +111,49 @@ export const OutfitGeneratingScreen: React.FC = () => {
       let result;
 
       if (mode === 'wardrobe') {
-        // Generate from wardrobe only
-        result = await ClaudeVisionService.analyzeStyle({
-          imageBase64: [],
-          requestType: 'wardrobe-outfit',
-          occasion: occasion,
-          stylePreference: profile?.stylePreference?.[0],
-          userMeasurements: profile?.measurements,
-          shoeSize: profile?.shoeSize,
-          wardrobeItems: wardrobe,
-          priceRange: priceRange,
-        });
+        // Generate from wardrobe only - with automatic retry
+        result = await retryApiCall(
+          () => ClaudeVisionService.analyzeStyle({
+            imageBase64: [],
+            requestType: 'wardrobe-outfit',
+            occasion: occasion,
+            stylePreference: profile?.stylePreference?.[0],
+            userMeasurements: profile?.measurements,
+            shoeSize: profile?.shoeSize,
+            wardrobeItems: wardrobe,
+            priceRange: priceRange,
+          }),
+          'OutfitGeneration-Wardrobe'
+        );
       } else if (mode === 'shopping') {
-        // Generate complete shopping outfit
-        result = await ClaudeVisionService.analyzeStyle({
-          imageBase64: [],
-          requestType: 'shopping-outfit',
-          occasion: occasion,
-          stylePreference: profile?.stylePreference?.[0],
-          userMeasurements: profile?.measurements,
-          shoeSize: profile?.shoeSize,
-          priceRange: priceRange,
-        });
+        // Generate complete shopping outfit - with automatic retry
+        result = await retryApiCall(
+          () => ClaudeVisionService.analyzeStyle({
+            imageBase64: [],
+            requestType: 'shopping-outfit',
+            occasion: occasion,
+            stylePreference: profile?.stylePreference?.[0],
+            userMeasurements: profile?.measurements,
+            shoeSize: profile?.shoeSize,
+            priceRange: priceRange,
+          }),
+          'OutfitGeneration-Shopping'
+        );
       } else {
-        // Mixed mode
-        result = await ClaudeVisionService.analyzeStyle({
-          imageBase64: [],
-          requestType: 'mixed-outfit',
-          occasion: occasion,
-          stylePreference: profile?.stylePreference?.[0],
-          userMeasurements: profile?.measurements,
-          shoeSize: profile?.shoeSize,
-          wardrobeItems: wardrobe,
-          priceRange: priceRange,
-        });
+        // Mixed mode - with automatic retry
+        result = await retryApiCall(
+          () => ClaudeVisionService.analyzeStyle({
+            imageBase64: [],
+            requestType: 'mixed-outfit',
+            occasion: occasion,
+            stylePreference: profile?.stylePreference?.[0],
+            userMeasurements: profile?.measurements,
+            shoeSize: profile?.shoeSize,
+            wardrobeItems: wardrobe,
+            priceRange: priceRange,
+          }),
+          'OutfitGeneration-Mixed'
+        );
       }
 
       // Create outfit result

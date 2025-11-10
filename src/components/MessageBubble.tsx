@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,7 +26,7 @@ interface MessageBubbleProps {
  * AI messages: left-aligned, wood gradient
  * User messages: right-aligned, gold gradient
  */
-export const MessageBubble: React.FC<MessageBubbleProps> = ({
+export const MessageBubble: React.FC<MessageBubbleProps> = memo(({
   message,
   isUser,
 }) => {

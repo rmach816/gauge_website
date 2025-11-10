@@ -22,6 +22,7 @@ import { Icon, AppIcons } from '../components/Icon';
 import { StorageService } from '../services/storage';
 import { PremiumService } from '../services/premium';
 import { getErrorMessage } from '../utils/errorMessages';
+import { usePremium } from '../contexts/PremiumContext';
 import { ChatSession, ChatMessage, RootStackParamList } from '../types';
 import { MessageBubble } from '../components/MessageBubble';
 import { UpgradePromptOverlay } from '../components/UpgradePromptOverlay';
@@ -51,12 +52,10 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
  */
 export const ChatScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { isPremium, canUseFreeMessage, freeChatMessagesRemaining, markFreeChatMessageUsed } = usePremium();
   const [session, setSession] = useState<ChatSession | null>(null);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
-  const [canUseFreeMessage, setCanUseFreeMessage] = useState(false);
-  const [freeChatMessagesRemaining, setFreeChatMessagesRemaining] = useState(0);
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showWardrobeSelector, setShowWardrobeSelector] = useState(false);
@@ -70,21 +69,11 @@ export const ChatScreen: React.FC = () => {
 
   const initializeChat = async () => {
     try {
-      // Check premium status
-      const premium = await PremiumService.isPremium();
-      setIsPremium(premium);
-
-      if (!premium) {
-        // Check free chat message status
-        const { canUseFreeMessage: canUse, messagesRemaining } = await PremiumService.getFreeChatStatus();
-        setCanUseFreeMessage(canUse);
-        setFreeChatMessagesRemaining(messagesRemaining);
-
-        if (!canUse) {
-          // Already used all 3 trial conversations - show paywall
-          navigation.navigate('Paywall');
-          return;
-        }
+      // Premium status now comes from context - no AsyncStorage read needed!
+      if (!isPremium && !canUseFreeMessage) {
+        // Already used all 3 trial conversations - show paywall
+        navigation.navigate('Paywall');
+        return;
       }
 
       // Load or create session
@@ -213,15 +202,10 @@ export const ChatScreen: React.FC = () => {
 
       // Handle free message tracking
       if (!isPremium && canUseFreeMessage) {
-        await PremiumService.markFreeChatMessageUsed();
-        
-        // Update remaining messages
-        const { messagesRemaining, canUseFreeMessage: canStillUse } = await PremiumService.getFreeChatStatus();
-        setFreeChatMessagesRemaining(messagesRemaining);
-        setCanUseFreeMessage(canStillUse);
+        await markFreeChatMessageUsed(); // Uses context method - updates globally
 
         // Show upgrade prompt after 3rd conversation (when remaining is 0)
-        if (messagesRemaining === 0) {
+        if (freeChatMessagesRemaining === 0) {
           setTimeout(() => {
             setShowUpgradePrompt(true);
           }, 2000); // Let them read the response first
@@ -390,15 +374,10 @@ export const ChatScreen: React.FC = () => {
 
       // Handle free message tracking
       if (!isPremium && canUseFreeMessage) {
-        await PremiumService.markFreeChatMessageUsed();
-        
-        // Update remaining messages
-        const { messagesRemaining, canUseFreeMessage: canStillUse } = await PremiumService.getFreeChatStatus();
-        setFreeChatMessagesRemaining(messagesRemaining);
-        setCanUseFreeMessage(canStillUse);
+        await markFreeChatMessageUsed(); // Uses context method - updates globally
 
         // Show upgrade prompt after 3rd conversation (when remaining is 0)
-        if (messagesRemaining === 0) {
+        if (freeChatMessagesRemaining === 0) {
           setTimeout(() => {
             setShowUpgradePrompt(true);
           }, 2000); // Let them read the response first
