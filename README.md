@@ -80,7 +80,7 @@ Add your GAUGE logo file:
 - Place `logo.png` in the root directory
 - Logo should be a PNG with transparent background
 - Recommended size: 64x64px to 128x128px (will be scaled to 32px height)
-- The logo should be the gold/bronze geometric symbol with "GAUGE" text
+- The logo should be the gold geometric symbol with "GAUGE" text
 
 ### Update Screenshots
 
