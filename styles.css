@@ -710,11 +710,6 @@ body {
     display: block;
 }
 
-.google-play-badge {
-    height: 60px;
-    width: auto;
-    display: block;
-}
 
 .download-note {
     color: var(--ivory);
@@ -730,7 +725,8 @@ body {
 
 .phones-showcase {
     display: flex;
-    gap: var(--spacing-lg);
+    justify-content: center;
+    align-items: center;
     transform: perspective(1000px) rotateY(5deg);
 }
 
@@ -935,8 +931,7 @@ body {
         max-width: 180px;
     }
 
-    .app-store-badge,
-    .google-play-badge {
+    .app-store-badge {
         height: 50px;
     }
 
