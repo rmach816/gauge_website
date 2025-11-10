@@ -80,7 +80,7 @@ export const AppIcons = {
   pants: { name: 'columns', library: 'feather' as IconLibrary },
   jacket: { name: 'box', library: 'feather' as IconLibrary },
   shoes: { name: 'shoe-formal', library: 'material' as IconLibrary },
-  hat: { name: 'baseball-cap', library: 'material' as IconLibrary },
+  hat: { name: 'hat-fedora', library: 'material-community' as IconLibrary },
   accessories: { name: 'watch', library: 'material' as IconLibrary },
   suit: { name: 'tshirt-crew', library: 'material' as IconLibrary },
   wardrobe: { name: 'package', library: 'feather' as IconLibrary },

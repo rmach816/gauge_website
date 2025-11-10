@@ -144,10 +144,24 @@ export const MeasurementStepScreen: React.FC = () => {
 
   const loadSavedMeasurement = async () => {
     try {
-      const state = await OnboardingService.getOnboardingState();
-      if (state.measurements && (state.measurements as any)[measurementType]) {
-        const savedValue = (state.measurements as any)[measurementType] as number;
-        
+      // CRITICAL FIX: Load from UserProfile first (source of truth for AI Chat)
+      // Fall back to OnboardingState if not in profile yet
+      const profile = await StorageService.getUserProfile();
+      let savedValue: number | undefined;
+      
+      if (profile?.measurements && (profile.measurements as any)[measurementType]) {
+        savedValue = (profile.measurements as any)[measurementType] as number;
+        console.log(`[MeasurementStepScreen] Loading ${measurementType} from UserProfile: ${savedValue}`);
+      } else {
+        // Fall back to OnboardingState (during initial onboarding)
+        const state = await OnboardingService.getOnboardingState();
+        if (state.measurements && (state.measurements as any)[measurementType]) {
+          savedValue = (state.measurements as any)[measurementType] as number;
+          console.log(`[MeasurementStepScreen] Loading ${measurementType} from OnboardingState: ${savedValue}`);
+        }
+      }
+      
+      if (savedValue !== undefined) {
         if (isHeight) {
           // Convert total inches to feet and inches
           const feetNum = Math.floor(savedValue / 12);
@@ -236,6 +250,44 @@ export const MeasurementStepScreen: React.FC = () => {
     // Mark step as complete
     await OnboardingService.markStepComplete(measurementType);
 
+    // CRITICAL FIX: ALWAYS save measurements to UserProfile immediately after saving to OnboardingState
+    // This ensures measurements are available to AI Chat whether during onboarding or editing from Settings
+    try {
+      const profile = await StorageService.getUserProfile();
+      
+      if (profile) {
+        // Update existing profile with ALL measurements from OnboardingState
+        profile.measurements = {
+          ...state.measurements,
+          preferredFit: profile.measurements?.preferredFit || 'regular',
+          updatedAt: new Date().toISOString(),
+        } as any;
+        profile.updatedAt = new Date().toISOString();
+        await StorageService.saveUserProfile(profile);
+        console.log(`[MeasurementStepScreen] ✅ Saved ${measurementType} measurement to UserProfile`);
+      } else {
+        // Create new profile with current measurements
+        const newProfile: any = {
+          id: `user-${Date.now()}`,
+          measurements: {
+            ...state.measurements,
+            preferredFit: 'regular',
+            updatedAt: new Date().toISOString(),
+          },
+          stylePreference: state.stylePreferences || [],
+          favoriteOccasions: [],
+          shoeSize: state.shoeSize,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        await StorageService.saveUserProfile(newProfile);
+        console.log(`[MeasurementStepScreen] ✅ Created new UserProfile with ${measurementType} measurement`);
+      }
+    } catch (error) {
+      console.error('[MeasurementStepScreen] ❌ Failed to save measurement to UserProfile:', error);
+      // Don't throw - allow user to continue even if save fails
+    }
+
     // Navigate to next measurement or next screen
     const currentIndex = MEASUREMENT_ORDER.indexOf(measurementType);
     if (currentIndex < MEASUREMENT_ORDER.length - 1) {
@@ -247,43 +299,7 @@ export const MeasurementStepScreen: React.FC = () => {
         totalSteps,
       });
     } else {
-      // All measurements done - CRITICAL FIX: Save to user profile now
-      try {
-        const finalState = await OnboardingService.getOnboardingState();
-        const profile = await StorageService.getUserProfile();
-        
-        if (profile) {
-          // Update existing profile
-          profile.measurements = {
-            ...finalState.measurements,
-            preferredFit: profile.measurements?.preferredFit || 'regular',
-            updatedAt: new Date().toISOString(),
-          } as any;
-          profile.updatedAt = new Date().toISOString();
-          await StorageService.saveUserProfile(profile);
-          console.log('[MeasurementStepScreen] ✅ All measurements complete - saved to profile');
-        } else {
-          // Create new profile
-          const newProfile: any = {
-            id: `user-${Date.now()}`,
-            measurements: {
-              ...finalState.measurements,
-              preferredFit: 'regular',
-              updatedAt: new Date().toISOString(),
-            },
-            stylePreference: [],
-            favoriteOccasions: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
-          await StorageService.saveUserProfile(newProfile);
-          console.log('[MeasurementStepScreen] ✅ Created profile with measurements');
-        }
-      } catch (error) {
-        console.error('[MeasurementStepScreen] ❌ Failed to save measurements to profile:', error);
-      }
-      
-      // Go to style preferences (use replace to prevent going back)
+      // All measurements done - navigate to style preferences
       navigation.replace('StylePreferences');
     }
   };

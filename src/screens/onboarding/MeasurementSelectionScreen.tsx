@@ -58,18 +58,42 @@ export const MeasurementSelectionScreen: React.FC = () => {
 
   const loadSavedMeasurements = async () => {
     try {
-      const state = await OnboardingService.getOnboardingState();
-      if (state.measurements) {
-        // Filter out non-numeric properties like 'preferredFit'
+      // CRITICAL FIX: Load from UserProfile first (source of truth for AI Chat)
+      // Then sync to OnboardingState to keep them in sync
+      const profile = await StorageService.getUserProfile();
+      
+      if (profile?.measurements) {
+        // User has saved measurements in profile - use those
         const numericMeasurements: Record<string, number> = {};
-        Object.keys(state.measurements).forEach(key => {
-          const value = (state.measurements as any)[key];
+        Object.keys(profile.measurements).forEach(key => {
+          const value = (profile.measurements as any)[key];
           if (typeof value === 'number') {
             numericMeasurements[key] = value;
           }
         });
         setSavedMeasurements(numericMeasurements);
         setCompletedCount(Object.keys(numericMeasurements).length);
+        
+        // Sync to OnboardingState so editing works correctly
+        const state = await OnboardingService.getOnboardingState();
+        state.measurements = profile.measurements;
+        await OnboardingService.saveOnboardingState(state);
+        console.log('[MeasurementSelectionScreen] ✅ Loaded measurements from UserProfile and synced to OnboardingState');
+      } else {
+        // No profile measurements yet - check OnboardingState (during initial onboarding)
+        const state = await OnboardingService.getOnboardingState();
+        if (state.measurements) {
+          const numericMeasurements: Record<string, number> = {};
+          Object.keys(state.measurements).forEach(key => {
+            const value = (state.measurements as any)[key];
+            if (typeof value === 'number') {
+              numericMeasurements[key] = value;
+            }
+          });
+          setSavedMeasurements(numericMeasurements);
+          setCompletedCount(Object.keys(numericMeasurements).length);
+          console.log('[MeasurementSelectionScreen] Loaded measurements from OnboardingState (initial onboarding)');
+        }
       }
     } catch (error) {
       console.error('[MeasurementSelectionScreen] Failed to load measurements:', error);

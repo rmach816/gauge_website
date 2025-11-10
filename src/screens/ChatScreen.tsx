@@ -512,15 +512,20 @@ export const ChatScreen: React.FC = () => {
                   <Text style={styles.loadingText}>Thinking...</Text>
                 </View>
               )}
-              <View style={{ height: 120 }} />
+              {/* Bottom padding to prevent last message from being hidden behind input */}
+              {/* DO NOT CHANGE: 100px accounts for input container height + spacing */}
+              <View style={{ height: 100 }} />
             </>
           }
         />
 
         {/* KeyboardAvoidingView wraps ONLY the input container */}
+        {/* IMPORTANT: DO NOT CHANGE THESE VALUES - They are carefully calibrated for both iOS and Android */}
+        {/* iOS: padding behavior with 90 offset gives proper spacing above keyboard */}
+        {/* Android: height behavior with 20 offset accounts for bottom navigation bar */}
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 20}
         >
           <View style={styles.inputContainer}>
           <View style={styles.actionButtons}>
@@ -703,6 +708,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     padding: TailorSpacing.md,
+    // DO NOT CHANGE: This padding is critical for both iOS (above home indicator) and Android (above nav bar)
     paddingBottom: Platform.OS === 'ios' ? TailorSpacing.lg : TailorSpacing.lg,
     backgroundColor: TailorColors.woodMedium,
     borderTopWidth: 1,

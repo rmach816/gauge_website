@@ -1,6 +1,11 @@
-# AI Chat Measurements Issue - FIXED
+# AI Chat Measurements Issue - FIXED (SUPERSEDED)
 
 ## Date: November 10, 2025
+## ⚠️ This document is SUPERSEDED by MEASUREMENTS_FIX_COMPREHENSIVE.md
+
+**NOTE**: This was the initial fix. A more comprehensive fix was implemented to handle ALL scenarios including editing single measurements from Settings. See **MEASUREMENTS_FIX_COMPREHENSIVE.md** for the complete solution.
+
+---
 
 ## Problem Identified
 
