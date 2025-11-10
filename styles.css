@@ -25,7 +25,7 @@
     --white: #FFFFFF;
     --black: #000000;
     
-    /* Backward compatibility aliases */
+    /* Legacy aliases (deprecated - use charcoal/slate/graphite instead) */
     --wood-dark: var(--charcoal-dark);
     --wood-medium: var(--slate-medium);
     --wood-light: var(--graphite-light);
@@ -81,7 +81,7 @@ body {
     font-size: var(--font-size-body);
     line-height: 1.6;
     color: var(--navy);
-    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0F0F0F 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0D0D0D 100%);
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -234,7 +234,7 @@ body {
 
 .hero {
     padding: 120px 0 var(--spacing-xxxl);
-    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0F0F0F 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0D0D0D 100%);
     position: relative;
     overflow: hidden;
 }
@@ -391,11 +391,11 @@ body {
 .btn-outline {
     background: transparent;
     color: var(--navy);
-    border: 2px solid var(--wood-medium);
+    border: 2px solid var(--slate-medium);
 }
 
 .btn-outline:hover {
-    background: var(--wood-medium);
+    background: var(--slate-medium);
     color: var(--cream);
 }
 
@@ -658,7 +658,7 @@ body {
 
 .download {
     padding: var(--spacing-xxxl) 0;
-    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0F0F0F 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0D0D0D 100%);
     color: var(--cream);
 }
 

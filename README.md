@@ -6,7 +6,7 @@ Landing page website for the GAUGE mobile app - Your Personal AI Tailor.
 
 This is a sophisticated, responsive landing page that matches the GAUGE app's premium design system. The website features:
 
-- **Modern Design**: Matches the app's wood-toned, gold-accented aesthetic
+- **Modern Design**: Matches the app's modern gray theme with gold accents
 - **Fully Responsive**: Works beautifully on desktop, tablet, and mobile devices
 - **Legal Compliance**: Privacy Policy and Terms of Service meeting Apple and Google requirements
 - **Smooth Animations**: Fade-in effects and smooth scrolling
@@ -25,7 +25,7 @@ This is a sophisticated, responsive landing page that matches the GAUGE app's pr
 
 The website uses the same design tokens as the GAUGE app:
 
-- **Colors**: Wood tones (dark, medium), cream/ivory text, gold accents, navy text
+- **Colors**: Modern gray tones (charcoal, slate, graphite), cream/ivory text, gold accents, navy text
 - **Typography**: Inter font family with consistent sizing
 - **Spacing**: Consistent spacing scale (xs, sm, md, lg, xl, xxl, xxxl)
 - **Components**: Buttons, cards, badges matching app style
