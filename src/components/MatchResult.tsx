@@ -1,7 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MatchRating } from '../types';
-import { Colors, Spacing, Typography, BorderRadius } from '../utils/constants';
+import {
+  TailorColors,
+  TailorSpacing,
+  TailorTypography,
+  TailorBorderRadius,
+  TailorContrasts,
+  TailorShadows,
+} from '../utils/constants';
+import { Icon, AppIcons } from './Icon';
 
 interface MatchResultProps {
   rating: MatchRating;
@@ -11,13 +19,13 @@ interface MatchResultProps {
 const getRatingConfig = (rating: MatchRating) => {
   switch (rating) {
     case 'great':
-      return { emoji: '✅', label: 'Great Match', color: Colors.success };
+      return { icon: AppIcons.check, label: 'Great Match', color: TailorColors.gold };
     case 'okay':
-      return { emoji: '⚠️', label: 'Okay', color: Colors.warning };
+      return { icon: AppIcons.warning, label: 'Okay', color: TailorColors.gold };
     case 'poor':
-      return { emoji: '❌', label: 'Needs Work', color: Colors.danger };
+      return { icon: AppIcons.error, label: 'Needs Work', color: TailorColors.gold };
     default:
-      return { emoji: '❓', label: 'Unknown', color: Colors.textSecondary };
+      return { icon: AppIcons.info, label: 'Unknown', color: TailorColors.gold };
   }
 };
 
@@ -26,9 +34,9 @@ export const MatchResult: React.FC<MatchResultProps> = ({ rating, analysis }) =>
 
   return (
     <View style={styles.container}>
-      <View style={[styles.badge, { backgroundColor: config.color + '20' }]}>
-        <Text style={styles.emoji}>{config.emoji}</Text>
-        <Text style={[styles.label, { color: config.color }]}>{config.label}</Text>
+      <View style={[styles.badge, { borderColor: config.color }]}>
+        <Icon name={config.icon.name} size={20} color={config.color} library={config.icon.library} style={styles.icon} />
+        <Text style={styles.label}>{config.label}</Text>
       </View>
       <Text style={styles.analysis}>{analysis}</Text>
     </View>
@@ -37,31 +45,37 @@ export const MatchResult: React.FC<MatchResultProps> = ({ rating, analysis }) =>
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.card,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
+    backgroundColor: TailorColors.woodMedium,
+    borderRadius: TailorBorderRadius.md,
+    padding: TailorSpacing.md,
+    marginBottom: TailorSpacing.md,
+    borderWidth: 1,
+    borderColor: TailorColors.woodLight,
+    ...TailorShadows.small,
   },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.round,
-    marginBottom: Spacing.md,
+    paddingHorizontal: TailorSpacing.md,
+    paddingVertical: TailorSpacing.sm,
+    borderRadius: TailorBorderRadius.round,
+    marginBottom: TailorSpacing.md,
+    borderWidth: 2,
+    backgroundColor: TailorColors.woodDark,
   },
-  emoji: {
-    fontSize: 24,
-    marginRight: Spacing.xs,
+  icon: {
+    marginRight: TailorSpacing.xs,
   },
   label: {
-    ...Typography.button,
+    ...TailorTypography.button,
     fontSize: 14,
+    color: TailorColors.gold,
+    fontWeight: '700',
   },
   analysis: {
-    ...Typography.body,
-    color: Colors.text,
+    ...TailorTypography.body,
+    color: TailorContrasts.onWoodMedium,
     lineHeight: 22,
   },
 });

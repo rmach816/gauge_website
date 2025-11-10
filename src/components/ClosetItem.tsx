@@ -1,7 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { ClosetItem as ClosetItemType } from '../types';
-import { Colors, Spacing, Typography, BorderRadius } from '../utils/constants';
+import {
+  TailorColors,
+  TailorTypography,
+  TailorSpacing,
+  TailorBorderRadius,
+  TailorShadows,
+  TailorContrasts,
+} from '../utils/constants';
+import { HapticFeedback } from '../utils/haptics';
 
 interface ClosetItemProps {
   item: ClosetItemType;
@@ -9,98 +19,223 @@ interface ClosetItemProps {
   onDelete?: () => void;
 }
 
+/**
+ * Premium wardrobe item card component
+ * Features: Gradient overlay, elegant typography, smooth shadows
+ */
 export const ClosetItemComponent: React.FC<ClosetItemProps> = ({
   item,
   onPress,
   onDelete,
 }) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    HapticFeedback.light();
+    Animated.spring(scaleAnim, {
+      toValue: 0.96,
+      useNativeDriver: true,
+      tension: 300,
+      friction: 10,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      tension: 300,
+      friction: 10,
+    }).start();
+  };
+
+  const handlePress = () => {
+    if (onPress) {
+      onPress();
+    }
+  };
+
+  const labelText = `${item.garmentType?.replace(/_/g, ' ') || 'Item'}, ${item.color || ''}${item.secondaryColor ? ` and ${item.secondaryColor}` : ''}${item.brand ? ` by ${item.brand}` : ''}${item.material ? `, ${item.material}` : ''}`;
+  const accessibilityLabel = labelText.trim() || 'Closet item';
+
   return (
     <TouchableOpacity
-      style={styles.container}
-      onPress={onPress}
-      activeOpacity={0.7}
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      activeOpacity={1}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={onPress ? "Tap to view details" : undefined}
     >
-      <Image source={{ uri: item.imageUri }} style={styles.image} />
-      <View style={styles.overlay}>
-        <View style={styles.info}>
-          <Text style={styles.garmentType}>{item.garmentType}</Text>
-          <Text style={styles.color}>{item.color}</Text>
-          {item.brand && <Text style={styles.brand}>{item.brand}</Text>}
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            transform: [{ scale: scaleAnim }],
+          },
+        ]}
+      >
+      <Image 
+        source={{ uri: item.imageUri }} 
+        style={styles.image}
+        cachePolicy="memory-disk"
+        contentFit="cover"
+        transition={200}
+      />
+      
+      {/* Gradient overlay for better text readability */}
+      <LinearGradient
+        colors={['transparent', 'rgba(0, 0, 0, 0.85)']}
+        style={styles.gradient}
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 0, y: 1 }}
+      />
+
+            {/* Delete button - top right corner */}
+            {onDelete && (
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  onDelete();
+                }}
+                activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={`Delete ${item.garmentType.replace(/_/g, ' ')}`}
+                accessibilityHint="Removes this item from your wardrobe"
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <View style={styles.deleteButtonInner}>
+                  <Text style={styles.deleteIcon}>✕</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+
+      {/* Item info overlay */}
+      <View style={styles.infoContainer}>
+        <Text style={styles.garmentType} numberOfLines={1}>
+          {item.garmentType.replace(/_/g, ' ')}
+        </Text>
+        <View style={styles.detailsRow}>
+          <Text style={styles.color} numberOfLines={1}>
+            {item.color}
+            {item.secondaryColor ? ` / ${item.secondaryColor}` : ''}
+          </Text>
+          {item.material && (
+            <>
+              <Text style={styles.separator}>•</Text>
+              <Text style={styles.material} numberOfLines={1}>
+                {item.material}
+              </Text>
+            </>
+          )}
         </View>
-        {onDelete && (
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={(e) => {
-              e.stopPropagation();
-              onDelete();
-            }}
-          >
-            <Text style={styles.deleteText}>×</Text>
-          </TouchableOpacity>
+        {item.brand && (
+          <Text style={styles.brand} numberOfLines={1}>
+            {item.brand}
+          </Text>
         )}
       </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '48%',
-    aspectRatio: 1,
-    borderRadius: BorderRadius.md,
+    width: '100%',
+    aspectRatio: 0.85, // Slightly taller than square for better proportions
+    borderRadius: TailorBorderRadius.lg,
     overflow: 'hidden',
-    marginBottom: Spacing.md,
-    backgroundColor: Colors.card,
+    backgroundColor: TailorColors.woodMedium,
+    ...TailorShadows.medium,
   },
   image: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
   },
-  overlay: {
+  gradient: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: Spacing.sm,
-  },
-  info: {
-    marginBottom: Spacing.xs,
-  },
-  garmentType: {
-    ...Typography.caption,
-    color: Colors.white,
-    fontWeight: '600',
-  },
-  color: {
-    ...Typography.caption,
-    color: Colors.white,
-    fontSize: 12,
-    opacity: 0.9,
-  },
-  brand: {
-    ...Typography.caption,
-    color: Colors.white,
-    fontSize: 11,
-    opacity: 0.8,
+    height: '60%',
   },
   deleteButton: {
     position: 'absolute',
-    top: Spacing.xs,
-    right: Spacing.xs,
-    backgroundColor: Colors.danger,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    top: TailorSpacing.sm,
+    right: TailorSpacing.sm,
+    zIndex: 10,
+    minWidth: 44, // Ensure minimum touch target size
+    minHeight: 44,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  deleteText: {
-    color: Colors.white,
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 20,
+  deleteButtonInner: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  deleteIcon: {
+    color: TailorColors.cream,
+    fontSize: 18,
+    fontWeight: '700',
+    lineHeight: 18,
+  },
+  infoContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: TailorSpacing.md,
+    paddingTop: TailorSpacing.lg,
+  },
+  garmentType: {
+    ...TailorTypography.label,
+    color: TailorColors.cream,
+    fontWeight: '700',
+    fontSize: 14,
+    marginBottom: TailorSpacing.xs / 2,
+    textTransform: 'capitalize',
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    marginBottom: TailorSpacing.xs / 2,
+  },
+  color: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  separator: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontSize: 10,
+    marginHorizontal: TailorSpacing.xs / 2,
+    opacity: 0.6,
+  },
+  material: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontSize: 12,
+    fontWeight: '500',
+    opacity: 0.9,
+  },
+  brand: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontSize: 11,
+    opacity: 0.8,
+    fontStyle: 'italic',
   },
 });
-

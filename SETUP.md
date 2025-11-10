@@ -21,13 +21,14 @@ Create a `.env` file in the root directory:
 
 ```env
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
-AMAZON_AFFILIATE_TAG=your_amazon_affiliate_tag
+AMAZON_AFFILIATE_TAG=gaugeapp-20
 NORDSTROM_AFFILIATE_ID=your_nordstrom_affiliate_id
 ```
 
 **Important**: 
 - Get your Anthropic API key from: https://console.anthropic.com/
-- Affiliate tags can be set up later if not available now
+- ✅ Amazon Associates ID is set: `gaugeapp-20` (already approved)
+- Nordstrom affiliate ID can be set up later if not available now
 
 ### 3. Add App Assets
 

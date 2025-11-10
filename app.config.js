@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   expo: {
     name: "GAUGE",
     slug: "gauge",
@@ -13,7 +13,7 @@ export default {
     },
     ios: {
       supportsTablet: false,
-      bundleIdentifier: "com.gauge.app",
+      bundleIdentifier: "app.gaugestyle.app",
       infoPlist: {
         NSCameraUsageDescription: "GAUGE needs camera access to analyze clothing.",
         NSPhotoLibraryUsageDescription: "GAUGE needs photo library access to select clothing images."
@@ -23,9 +23,10 @@ export default {
       }
     },
     android: {
-      package: "com.gauge.app",
+      package: "app.gaugestyle.app",
       permissions: ["CAMERA", "READ_EXTERNAL_STORAGE"],
-      versionCode: 1
+      versionCode: 1,
+      softwareKeyboardLayoutMode: "pan" // Ensures keyboard pushes content up instead of resizing
     },
     plugins: [
       [

@@ -5,35 +5,50 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert,
-  ActivityIndicator,
 } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { PhotoCapture } from '../components/PhotoCapture';
+import { WoodBackground } from '../components/WoodBackground';
+import { GoldButton } from '../components/GoldButton';
+import { SetupReminderBanner } from '../components/SetupReminderBanner';
+import { Icon, AppIcons } from '../components/Icon';
 import { PremiumService } from '../services/premium';
-import { ClaudeVisionService } from '../services/claude';
 import { StorageService } from '../services/storage';
-import { HistoryService } from '../services/history';
-import { RootStackParamList, MatchRating, MatchCheckResult } from '../types';
-import { Colors, Spacing, Typography, BorderRadius } from '../utils/constants';
-import { validateApiKey } from '../config/api';
-import uuid from 'react-native-uuid';
+import { RootStackParamList } from '../types';
+import {
+  TailorColors,
+  TailorTypography,
+  TailorSpacing,
+  TailorBorderRadius,
+  TailorContrasts,
+  TailorShadows,
+} from '../utils/constants';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
+/**
+ * HomeScreen
+ * Main entry point with three primary actions:
+ * 1. Chat with Your Tailor (Premium) - Large gold button
+ * 2. Quick Style Check (Free/Premium) - Standard button
+ * 3. Build an Outfit (Free/Premium) - Standard button
+ */
 export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const [photos, setPhotos] = useState<string[]>([]);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [premiumStatus, setPremiumStatus] = useState<{ isPremium: boolean; checksRemaining: number }>({ 
+  const [premiumStatus, setPremiumStatus] = useState<{ 
+    isPremium: boolean; 
+    checksRemaining: number 
+  }>({ 
     isPremium: false, 
     checksRemaining: 10 
   });
+  const [userLastName, setUserLastName] = useState<string>('');
 
   useEffect(() => {
     loadPremiumStatus();
+    loadUserName();
   }, []);
 
   const loadPremiumStatus = async () => {
@@ -44,229 +59,224 @@ export const HomeScreen: React.FC = () => {
     });
   };
 
-  const handlePhotoCaptured = (uri: string) => {
-    if (photos.length < 3) {
-      setPhotos([...photos, uri]);
-    }
-  };
-
-  const handlePhotoRemoved = (uri: string) => {
-    setPhotos(photos.filter((p) => p !== uri));
-  };
-
-  const handleCheckStyle = async () => {
-    if (!validateApiKey()) {
-      Alert.alert('Configuration Error', 'API key not configured. Please check your .env file.');
-      return;
-    }
-
-    if (photos.length === 0) {
-      Alert.alert('No Photos', 'Please add at least one photo before checking.');
-      return;
-    }
-
-    // Check network connectivity
-    const { NetworkService } = await import('../utils/network');
-    const isOnline = await NetworkService.isOnline();
-    if (!isOnline) {
-      Alert.alert(
-        'No Internet Connection',
-        'Please check your internet connection and try again.'
-      );
-      return;
-    }
-
-    const canCheck = await PremiumService.canPerformCheck();
-    if (!canCheck.allowed) {
-      navigation.navigate('Paywall');
-      return;
-    }
-
-    // Check rate limiting
-    const { RateLimiter } = await import('../utils/rateLimiter');
-    const rateLimit = await RateLimiter.checkApiRateLimit();
-    if (!rateLimit.allowed) {
-      const resetDate = new Date(rateLimit.resetAt);
-      const secondsUntilReset = Math.ceil((resetDate.getTime() - Date.now()) / 1000);
-      Alert.alert(
-        'Rate Limit Exceeded',
-        `Please wait ${secondsUntilReset} seconds before making another request.`
-      );
-      return;
-    }
-
-    setIsAnalyzing(true);
-
+  const loadUserName = async () => {
     try {
       const profile = await StorageService.getUserProfile();
-      
-      const result = await ClaudeVisionService.analyzeStyle({
-        imageBase64: photos,
-        requestType: 'instant-check',
-        occasion: undefined,
-        stylePreference: profile?.stylePreference,
-        userMeasurements: profile?.measurements,
-      });
-
-      await PremiumService.decrementCheck();
-
-      const checkId = uuid.v4() as string;
-      const checkResult: MatchCheckResult = {
-        id: checkId,
-        imageUris: photos,
-        rating: result.rating || MatchRating.OKAY,
-        analysis: result.analysis,
-        suggestions: result.suggestions,
-        createdAt: new Date().toISOString(),
-      };
-
-      await HistoryService.saveCheck({
-        id: checkId,
-        type: 'instant-check',
-        result: checkResult,
-        createdAt: new Date().toISOString(),
-      });
-
-      navigation.navigate('Result', { checkId });
-      setPhotos([]);
-      loadPremiumStatus();
-      
-      // Track analytics
-      const { AnalyticsService } = await import('../services/analytics');
-      AnalyticsService.trackStyleCheck(checkResult.rating, photos.length);
+      if (profile?.lastName) {
+        setUserLastName(profile.lastName);
+      }
     } catch (error) {
-      console.error('[HomeScreen] Analysis failed:', error);
-      Alert.alert(
-        'Analysis Failed',
-        'Unable to analyze your outfit. Please try again.',
-      );
-    } finally {
-      setIsAnalyzing(false);
+      console.error('[HomeScreen] Failed to load user name:', error);
     }
+  };
+
+  const handleChatPress = () => {
+    // Always navigate to Chat - ChatScreen handles free message logic (CRITICAL FIX #3)
+    navigation.navigate('Chat');
+  };
+
+  const handleQuickCheckPress = () => {
+    navigation.navigate('QuickStyleCheck');
+  };
+
+  const handleBuildOutfitPress = () => {
+    navigation.navigate('BuildOutfit');
+  };
+
+  const handleFavoritesPress = () => {
+    navigation.navigate('Favorites');
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
-          <Text style={styles.title}>Check Your Style</Text>
-          <View style={styles.premiumBadge}>
-            {premiumStatus.isPremium ? (
-              <Text style={styles.premiumText}>✨ Premium</Text>
-            ) : (
-              <Text style={styles.checkText}>
-                {premiumStatus.checksRemaining} checks remaining
-              </Text>
-            )}
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Add Photos</Text>
-          <Text style={styles.sectionSubtitle}>
-            Take or select up to 3 photos of your outfit
-          </Text>
-          <PhotoCapture
-            onPhotoCaptured={handlePhotoCaptured}
-            onPhotoRemoved={handlePhotoRemoved}
-            capturedPhotos={photos}
-            maxPhotos={3}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={[
-            styles.button,
-            (isAnalyzing || photos.length === 0) && styles.buttonDisabled,
-          ]}
-          onPress={handleCheckStyle}
-          disabled={isAnalyzing || photos.length === 0}
+    <WoodBackground>
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
         >
-          {isAnalyzing ? (
-            <>
-              <ActivityIndicator color={Colors.white} style={styles.loader} />
-              <Text style={styles.buttonText}>Analyzing...</Text>
-            </>
-          ) : (
-            <Text style={styles.buttonText}>Check My Style</Text>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={styles.header}>
+            <Text style={styles.title}>
+              {userLastName 
+                ? `How can I help you today, Mr. ${userLastName}?`
+                : 'How can I help you today?'}
+            </Text>
+          </View>
+
+          {/* Primary CTA: Chat with Your Tailor */}
+          <TouchableOpacity
+            style={styles.chatButton}
+            onPress={handleChatPress}
+            activeOpacity={0.8}
+          >
+            <View style={styles.chatButtonContent}>
+              <ExpoImage
+                source={require('../../assets/ai_tailor.png')}
+                style={styles.chatButtonIcon}
+                contentFit="contain"
+                transition={200}
+              />
+              <View style={styles.chatButtonTextContainer}>
+                <Text style={styles.chatButtonTitle}>
+                  Chat with Your Tailor
+                </Text>
+                <Text style={styles.chatButtonSubtitle}>
+                  Premium • Your personal style expert
+                </Text>
+              </View>
+              {!premiumStatus.isPremium && (
+                <View style={styles.premiumBadge}>
+                  <Text style={styles.premiumBadgeText}>Premium</Text>
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
+
+          {/* Secondary Actions */}
+          <View style={styles.secondaryActions}>
+            {/* Quick Style Check */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={handleQuickCheckPress}
+              activeOpacity={0.8}
+            >
+              <Icon name={AppIcons.camera.name} size={24} color={TailorContrasts.onWoodMedium} library={AppIcons.camera.library} style={styles.actionButtonIcon} />
+              <View style={styles.actionButtonContent}>
+                <Text style={styles.actionButtonTitle}>Quick Style Check</Text>
+                <Text style={styles.actionButtonSubtitle}>
+                  {premiumStatus.isPremium
+                    ? 'Unlimited'
+                    : `Free: ${premiumStatus.checksRemaining} remaining`}
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* Build an Outfit */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={handleBuildOutfitPress}
+              activeOpacity={0.8}
+            >
+              <Icon name={AppIcons.target.name} size={24} color={TailorContrasts.onWoodMedium} library={AppIcons.target.library} style={styles.actionButtonIcon} />
+              <View style={styles.actionButtonContent}>
+                <Text style={styles.actionButtonTitle}>Build an Outfit</Text>
+                <Text style={styles.actionButtonSubtitle}>
+                  Choose occasion, we'll help
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* Favorite Outfits */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={handleFavoritesPress}
+              activeOpacity={0.8}
+            >
+              <Icon name={AppIcons.favorite.name} size={24} color={TailorContrasts.onWoodMedium} library={AppIcons.favorite.library} style={styles.actionButtonIcon} />
+              <View style={styles.actionButtonContent}>
+                <Text style={styles.actionButtonTitle}>Favorite Outfits</Text>
+                <Text style={styles.actionButtonSubtitle}>
+                  View your saved outfits
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* Setup Reminder Banner (if user skipped onboarding) */}
+          <SetupReminderBanner />
+        </ScrollView>
+      </SafeAreaView>
+    </WoodBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   scrollView: {
     flex: 1,
   },
   content: {
-    padding: Spacing.md,
+    padding: TailorSpacing.xl,
+    paddingTop: TailorSpacing.lg,
   },
   header: {
-    marginBottom: Spacing.xl,
+    marginBottom: TailorSpacing.xl,
+    alignItems: 'center',
   },
   title: {
-    ...Typography.h1,
-    color: Colors.text,
-    marginBottom: Spacing.sm,
+    ...TailorTypography.h1,
+    color: TailorContrasts.onWoodDark,
+    textAlign: 'center',
+  },
+  chatButton: {
+    backgroundColor: TailorColors.woodMedium,
+    borderRadius: TailorBorderRadius.lg,
+    padding: TailorSpacing.xl,
+    marginBottom: TailorSpacing.lg,
+    borderWidth: 3,
+    borderColor: TailorColors.gold,
+    ...TailorShadows.large,
+  },
+  chatButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  chatButtonIcon: {
+    width: 64,
+    height: 64,
+    marginRight: TailorSpacing.md,
+  },
+  chatButtonTextContainer: {
+    flex: 1,
+  },
+  chatButtonTitle: {
+    ...TailorTypography.h2,
+    color: TailorContrasts.onWoodMedium,
+    marginBottom: TailorSpacing.xs,
+  },
+  chatButtonSubtitle: {
+    ...TailorTypography.body,
+    color: TailorColors.ivory,
   },
   premiumBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: Colors.card,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
-    borderRadius: BorderRadius.round,
+    backgroundColor: TailorColors.gold,
+    paddingHorizontal: TailorSpacing.md,
+    paddingVertical: TailorSpacing.xs,
+    borderRadius: TailorBorderRadius.round,
   },
-  premiumText: {
-    ...Typography.caption,
-    color: Colors.primary,
-    fontWeight: '600',
+  premiumBadgeText: {
+    ...TailorTypography.label,
+    color: TailorContrasts.onGold,
   },
-  checkText: {
-    ...Typography.caption,
-    color: Colors.textSecondary,
+  secondaryActions: {
+    gap: TailorSpacing.md,
   },
-  section: {
-    marginBottom: Spacing.xl,
-  },
-  sectionTitle: {
-    ...Typography.h3,
-    color: Colors.text,
-    marginBottom: Spacing.xs,
-  },
-  sectionSubtitle: {
-    ...Typography.caption,
-    color: Colors.textSecondary,
-    marginBottom: Spacing.md,
-  },
-  button: {
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: BorderRadius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
+  actionButton: {
+    backgroundColor: TailorColors.woodMedium,
+    borderRadius: TailorBorderRadius.md,
+    padding: TailorSpacing.lg,
     flexDirection: 'row',
-    marginTop: Spacing.md,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    ...TailorShadows.medium,
   },
-  buttonDisabled: {
-    opacity: 0.5,
+  actionButtonIcon: {
+    fontSize: 32,
+    marginRight: TailorSpacing.md,
   },
-  buttonText: {
-    ...Typography.button,
-    color: Colors.white,
+  actionButtonContent: {
+    flex: 1,
   },
-  loader: {
-    marginRight: Spacing.sm,
+  actionButtonTitle: {
+    ...TailorTypography.h3,
+    color: TailorContrasts.onWoodMedium,
+    marginBottom: TailorSpacing.xs,
+  },
+  actionButtonSubtitle: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
   },
 });
-

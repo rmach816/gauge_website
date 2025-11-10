@@ -11,224 +11,322 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { OccasionPicker } from '../components/OccasionPicker';
-import { ShoppingCard } from '../components/ShoppingCard';
-import { StorageService } from '../services/storage';
-import { ClaudeVisionService } from '../services/claude';
-import { AffiliateLinkService } from '../services/affiliateLinks';
-import { RootStackParamList, Occasion, StylePreference, PriceRange, OutfitItem } from '../types';
-import { Colors, Spacing, Typography, BorderRadius } from '../utils/constants';
+import { WoodBackground } from '../components/WoodBackground';
+import { Icon, AppIcons } from '../components/Icon';
+import { RootStackParamList, GarmentType, PriceRange, OutfitItem } from '../types';
+import {
+  TailorColors,
+  TailorTypography,
+  TailorSpacing,
+  TailorBorderRadius,
+  TailorContrasts,
+  TailorShadows,
+} from '../utils/constants';
+import uuid from 'react-native-uuid';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
+interface QuickShopCategory {
+  label: string;
+  garmentType: GarmentType;
+  icon: { name: string; library: 'feather' | 'ionicons' | 'material' };
+  description: string;
+}
+
+
 export const ShopScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const [selectedOccasion, setSelectedOccasion] = useState<Occasion | undefined>();
-  const [stylePreference, setStylePreference] = useState<StylePreference>(
-    StylePreference.MODERN
-  );
-  const [priceRange, setPriceRange] = useState<PriceRange>(PriceRange.MID);
-  const [isBuilding, setIsBuilding] = useState(false);
-  const [outfitItems, setOutfitItems] = useState<OutfitItem[]>([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState<PriceRange>(PriceRange.MID);
 
-  const handleBuildOutfit = async () => {
-    if (!selectedOccasion) {
-      Alert.alert('Select Occasion', 'Please select an occasion first.');
-      return;
-    }
+  const quickShopCategories: QuickShopCategory[] = [
+    {
+      label: 'Shirts',
+      garmentType: GarmentType.SHIRT,
+      icon: AppIcons.shirt,
+      description: "Men's dress shirts, casual shirts, polos",
+    },
+    {
+      label: 'Pants',
+      garmentType: GarmentType.PANTS,
+      icon: AppIcons.pants,
+      description: 'Dress pants, chinos, jeans',
+    },
+    {
+      label: 'Jackets',
+      garmentType: GarmentType.JACKET,
+      icon: AppIcons.jacket,
+      description: 'Blazers, sport coats, casual jackets',
+    },
+    {
+      label: 'Shoes',
+      garmentType: GarmentType.SHOES,
+      icon: AppIcons.shoes,
+      description: 'Dress shoes, casual shoes, sneakers',
+    },
+    {
+      label: 'Accessories',
+      garmentType: GarmentType.ACCESSORIES,
+      icon: AppIcons.accessories,
+      description: 'Ties, belts, watches, and more',
+    },
+  ];
 
-    setIsBuilding(true);
-    try {
-      const profile = await StorageService.getUserProfile();
-      
-      // For outfit builder, we need a sample image or description
-      // In production, you'd use a stock image or user's style preferences
-      const result = await ClaudeVisionService.analyzeStyle({
-        imageBase64: [], // Empty for text-based outfit generation
-        requestType: 'outfit-builder',
-        occasion: selectedOccasion,
-        stylePreference: stylePreference || profile?.stylePreference,
-        userMeasurements: profile?.measurements,
-      });
+  const handleQuickShop = (category: QuickShopCategory) => {
+    // Create a basic outfit item for shopping
+    const outfitItem: OutfitItem = {
+      id: uuid.v4() as string,
+      garmentType: category.garmentType,
+      description: category.description,
+      colors: [],
+      material: undefined,
+      brand: undefined,
+      priceRange: selectedPriceRange,
+      shoppingOptions: [],
+    };
 
-      if (result.completeOutfit) {
-        const items = await Promise.all(
-          result.completeOutfit.map(async (item) => {
-            const shoppingOptions = AffiliateLinkService.generateShoppingOptions({
-              garmentType: item.garmentType,
-              description: item.description,
-              colors: item.colors,
-              priceRange,
-            });
-            return {
-              ...item,
-              shoppingOptions,
-            };
-          })
-        );
-        setOutfitItems(items);
-      }
-    } catch (error) {
-      console.error('[ShopScreen] Build failed:', error);
-      Alert.alert('Error', 'Failed to build outfit. Please try again.');
-    } finally {
-      setIsBuilding(false);
-    }
+    navigation.navigate('ItemShopping', { outfitItem });
+  };
+
+  const handleBuildOutfit = () => {
+    navigation.navigate('BuildOutfit');
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.content}
-      >
-        <Text style={styles.title}>Build Complete Outfit</Text>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Occasion</Text>
-          <OccasionPicker
-            selectedOccasion={selectedOccasion}
-            onSelect={setSelectedOccasion}
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Price Range</Text>
-          <View style={styles.priceRow}>
-            {Object.values(PriceRange).map((range) => (
-              <TouchableOpacity
-                key={range}
-                style={[
-                  styles.priceButton,
-                  priceRange === range && styles.priceButtonSelected,
-                ]}
-                onPress={() => setPriceRange(range)}
-              >
-                <Text
-                  style={[
-                    styles.priceText,
-                    priceRange === range && styles.priceTextSelected,
-                  ]}
-                >
-                  {range === PriceRange.BUDGET ? '$' : range === PriceRange.MID ? '$$' : '$$$'}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={[styles.button, (!selectedOccasion || isBuilding) && styles.buttonDisabled]}
-          onPress={handleBuildOutfit}
-          disabled={!selectedOccasion || isBuilding}
+    <WoodBackground>
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
         >
-          {isBuilding ? (
-            <>
-              <ActivityIndicator color={Colors.white} style={styles.loader} />
-              <Text style={styles.buttonText}>Building Outfit...</Text>
-            </>
-          ) : (
-            <Text style={styles.buttonText}>Build Outfit</Text>
-          )}
-        </TouchableOpacity>
-
-        {outfitItems.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Complete Outfit</Text>
-            {outfitItems.map((item, index) => (
-              <View key={index} style={styles.outfitGroup}>
-                <Text style={styles.outfitItemTitle}>{item.garmentType}</Text>
-                <Text style={styles.outfitItemDescription}>{item.description}</Text>
-                {item.shoppingOptions?.map((option, optIndex) => (
-                  <ShoppingCard key={optIndex} item={option} />
-                ))}
-              </View>
-            ))}
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.title}>Shop</Text>
+            <Text style={styles.subtitle}>
+              Browse by category or build a complete outfit
+            </Text>
           </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+
+          {/* Price Range Selector */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Price Range</Text>
+            <View style={styles.priceRow}>
+              {Object.values(PriceRange).map((range) => (
+                <TouchableOpacity
+                  key={range}
+                  style={[
+                    styles.priceButton,
+                    selectedPriceRange === range && styles.priceButtonSelected,
+                  ]}
+                  onPress={() => setSelectedPriceRange(range)}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.priceText,
+                      selectedPriceRange === range && styles.priceTextSelected,
+                    ]}
+                  >
+                    {range === PriceRange.BUDGET ? '$' : range === PriceRange.MID ? '$$' : '$$$'}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.priceLabel,
+                      selectedPriceRange === range && styles.priceLabelSelected,
+                    ]}
+                  >
+                    {range}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Quick Shop Categories */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Quick Shop</Text>
+            <Text style={styles.sectionSubtitle}>
+              Browse by category and find what you need
+            </Text>
+
+            <View style={styles.categoryGrid}>
+              {quickShopCategories.map((category) => (
+                <TouchableOpacity
+                  key={category.garmentType}
+                  style={styles.categoryCard}
+                  onPress={() => handleQuickShop(category)}
+                  activeOpacity={0.7}
+                >
+                  <Icon
+                    name={category.icon.name}
+                    size={40}
+                    color={TailorColors.gold}
+                    library={category.icon.library}
+                    style={styles.categoryIcon}
+                  />
+                  <Text style={styles.categoryLabel}>{category.label}</Text>
+                  <Text style={styles.categoryDescription} numberOfLines={2}>
+                    {category.description}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Build Complete Outfit */}
+          <View style={styles.section}>
+            <View style={styles.divider} />
+            <Text style={styles.sectionTitle}>Need a Complete Outfit?</Text>
+            <Text style={styles.sectionSubtitle}>
+              Let us help you put together the perfect look for any occasion
+            </Text>
+            <TouchableOpacity
+              style={styles.buildOutfitButton}
+              onPress={handleBuildOutfit}
+              activeOpacity={0.7}
+            >
+              <Icon
+                name={AppIcons.sparkles.name}
+                size={20}
+                color={TailorContrasts.onGold}
+                library={AppIcons.sparkles.library}
+                style={{ marginRight: 8 }}
+              />
+              <Text style={styles.buildOutfitButtonText}>Build Complete Outfit</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </WoodBackground>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   scrollView: {
     flex: 1,
   },
   content: {
-    padding: Spacing.md,
+    padding: TailorSpacing.xl,
+  },
+  header: {
+    marginBottom: TailorSpacing.xl,
   },
   title: {
-    ...Typography.h1,
-    color: Colors.text,
-    marginBottom: Spacing.xl,
+    ...TailorTypography.h1,
+    color: TailorContrasts.onWoodDark,
+    marginBottom: TailorSpacing.xs,
+  },
+  subtitle: {
+    ...TailorTypography.body,
+    color: TailorColors.ivory,
+    fontSize: 14,
   },
   section: {
-    marginBottom: Spacing.xl,
+    marginBottom: TailorSpacing.xl,
   },
   sectionTitle: {
-    ...Typography.h3,
-    color: Colors.text,
-    marginBottom: Spacing.md,
+    ...TailorTypography.h2,
+    color: TailorContrasts.onWoodDark,
+    marginBottom: TailorSpacing.xs,
+  },
+  sectionSubtitle: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    marginBottom: TailorSpacing.md,
+    fontSize: 13,
   },
   priceRow: {
     flexDirection: 'row',
-    gap: Spacing.sm,
+    gap: TailorSpacing.sm,
   },
   priceButton: {
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.round,
-    backgroundColor: Colors.card,
-    borderWidth: 1,
-    borderColor: Colors.border,
+    flex: 1,
+    paddingVertical: TailorSpacing.sm,
+    borderRadius: TailorBorderRadius.md,
+    backgroundColor: TailorColors.woodMedium,
+    borderWidth: 2,
+    borderColor: TailorColors.woodLight,
+    alignItems: 'center',
+    ...TailorShadows.small,
   },
   priceButtonSelected: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    backgroundColor: TailorColors.gold,
+    borderColor: TailorColors.gold,
   },
   priceText: {
-    ...Typography.button,
-    color: Colors.text,
+    ...TailorTypography.h3,
+    color: TailorContrasts.onWoodMedium,
+    fontSize: 20,
+    fontWeight: '700',
   },
   priceTextSelected: {
-    color: Colors.white,
+    color: TailorContrasts.onGold,
   },
-  button: {
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.md,
-    borderRadius: BorderRadius.md,
+  priceLabel: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontSize: 11,
+    marginTop: 2,
+  },
+  priceLabelSelected: {
+    color: TailorContrasts.onGold,
+  },
+  categoryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: TailorSpacing.md,
+  },
+  categoryCard: {
+    width: '47%',
+    backgroundColor: TailorColors.woodMedium,
+    borderRadius: TailorBorderRadius.md,
+    padding: TailorSpacing.md,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: TailorColors.woodLight,
+    ...TailorShadows.medium,
+  },
+  categoryIcon: {
+    marginBottom: TailorSpacing.sm,
+  },
+  categoryLabel: {
+    ...TailorTypography.h3,
+    color: TailorColors.gold,
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: TailorSpacing.xs / 2,
+    textAlign: 'center',
+  },
+  categoryDescription: {
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontSize: 11,
+    textAlign: 'center',
+    lineHeight: 14,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: TailorColors.woodLight,
+    marginVertical: TailorSpacing.lg,
+  },
+  buildOutfitButton: {
+    backgroundColor: TailorColors.gold,
+    paddingVertical: TailorSpacing.md,
+    borderRadius: TailorBorderRadius.md,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    marginBottom: Spacing.xl,
+    ...TailorShadows.medium,
   },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    ...Typography.button,
-    color: Colors.white,
-  },
-  loader: {
-    marginRight: Spacing.sm,
-  },
-  outfitGroup: {
-    marginBottom: Spacing.lg,
-  },
-  outfitItemTitle: {
-    ...Typography.h3,
-    color: Colors.primary,
-    marginBottom: Spacing.xs,
-  },
-  outfitItemDescription: {
-    ...Typography.body,
-    color: Colors.textSecondary,
-    marginBottom: Spacing.sm,
+  buildOutfitButtonText: {
+    ...TailorTypography.button,
+    color: TailorContrasts.onGold,
+    fontWeight: '700',
   },
 });
+
 

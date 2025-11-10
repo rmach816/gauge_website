@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { NetworkService } from '../utils/network';
-import { Colors, Spacing, Typography } from '../utils/constants';
+import { TailorColors, TailorSpacing, TailorTypography } from '../utils/constants';
 
 export const OfflineBanner: React.FC = () => {
   const [isOffline, setIsOffline] = useState(false);
@@ -9,15 +9,21 @@ export const OfflineBanner: React.FC = () => {
 
   useEffect(() => {
     // Check initial state
-    NetworkService.isOnline().then((online) => {
-      setIsOffline(!online);
-      if (!online) {
-        Animated.spring(slideAnim, {
-          toValue: 0,
-          useNativeDriver: true,
-        }).start();
-      }
-    });
+    NetworkService.isOnline()
+      .then((online) => {
+        setIsOffline(!online);
+        if (!online) {
+          Animated.spring(slideAnim, {
+            toValue: 0,
+            useNativeDriver: true,
+          }).start();
+        }
+      })
+      .catch((error) => {
+        console.error('[OfflineBanner] Failed to check network status:', error);
+        // Default to online if check fails
+        setIsOffline(false);
+      });
 
     // Subscribe to network changes
     const unsubscribe = NetworkService.subscribe((state) => {
@@ -67,9 +73,9 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: Colors.danger,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
+    backgroundColor: TailorColors.navy,
+    paddingVertical: TailorSpacing.sm,
+    paddingHorizontal: TailorSpacing.md,
     zIndex: 9999,
   },
   content: {
@@ -79,11 +85,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 16,
-    marginRight: Spacing.xs,
+    marginRight: TailorSpacing.xs,
   },
   text: {
-    ...Typography.caption,
-    color: Colors.white,
+    ...TailorTypography.caption,
+    color: TailorColors.cream,
     fontWeight: '600',
   },
 });

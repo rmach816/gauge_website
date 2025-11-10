@@ -21,6 +21,27 @@ export const ClosetService = {
   },
 
   /**
+   * Update existing item in closet
+   */
+  async updateItem(itemId: string, updates: Partial<ClosetItem>): Promise<void> {
+    const items = await this.getClosetItems();
+    const itemIndex = items.findIndex((item) => item.id === itemId);
+    
+    if (itemIndex === -1) {
+      throw new Error(`Item with id ${itemId} not found`);
+    }
+    
+    const updatedItem = {
+      ...items[itemIndex],
+      ...updates,
+      id: itemId, // Ensure ID doesn't change
+    };
+    
+    items[itemIndex] = updatedItem;
+    await StorageService.saveClosetItems(items);
+  },
+
+  /**
    * Remove item from closet
    */
   async removeItem(itemId: string): Promise<void> {

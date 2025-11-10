@@ -1,7 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Suggestion } from '../types';
-import { Colors, Spacing, Typography, BorderRadius } from '../utils/constants';
+import {
+  TailorColors,
+  TailorSpacing,
+  TailorTypography,
+  TailorBorderRadius,
+  TailorContrasts,
+  TailorShadows,
+} from '../utils/constants';
 
 interface SuggestionCardProps {
   suggestion: Suggestion;
@@ -33,59 +40,64 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion, onSh
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.card,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
+    backgroundColor: TailorColors.woodMedium,
+    borderRadius: TailorBorderRadius.md,
+    padding: TailorSpacing.md,
+    marginBottom: TailorSpacing.md,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: TailorColors.woodLight,
+    ...TailorShadows.small,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: Spacing.sm,
+    marginBottom: TailorSpacing.sm,
   },
   garmentType: {
-    ...Typography.h3,
-    color: Colors.primary,
+    ...TailorTypography.h3,
+    color: TailorColors.gold,
+    fontWeight: '700',
   },
   description: {
-    ...Typography.body,
-    color: Colors.text,
+    ...TailorTypography.body,
+    color: TailorContrasts.onWoodMedium,
     fontWeight: '600',
-    marginBottom: Spacing.xs,
+    marginBottom: TailorSpacing.xs,
   },
   reasoning: {
-    ...Typography.caption,
-    color: Colors.textSecondary,
-    marginBottom: Spacing.sm,
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    marginBottom: TailorSpacing.sm,
     lineHeight: 20,
   },
   colorsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: Spacing.sm,
+    marginBottom: TailorSpacing.sm,
   },
   colorsLabel: {
-    ...Typography.caption,
-    color: Colors.textTertiary,
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
+    fontWeight: '600',
   },
   colorsText: {
-    ...Typography.caption,
-    color: Colors.textSecondary,
+    ...TailorTypography.caption,
+    color: TailorColors.ivory,
   },
   shopButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: BorderRadius.sm,
+    backgroundColor: TailorColors.gold,
+    paddingVertical: TailorSpacing.sm,
+    paddingHorizontal: TailorSpacing.md,
+    borderRadius: TailorBorderRadius.sm,
     alignSelf: 'flex-start',
-    marginTop: Spacing.xs,
+    marginTop: TailorSpacing.xs,
+    ...TailorShadows.small,
   },
   shopButtonText: {
-    ...Typography.button,
-    color: Colors.white,
+    ...TailorTypography.button,
+    color: TailorContrasts.onGold,
     fontSize: 14,
+    fontWeight: '700',
   },
 });
 

@@ -1,0 +1,97 @@
+APP STORE CONNECT METADATA
+===========================
+
+BUNDLE IDENTIFIER:
+------------------
+app.gaugestyle.app
+
+SKU:
+----
+gauge-ios-001
+
+APP NAME (30 characters max):
+-----------------------------
+GAUGE AI Tailor
+
+CHARACTER COUNT: 16/30
+
+
+SUBTITLE (30 characters max):
+-----------------------------
+Men's Style & Outfit Assistant
+
+CHARACTER COUNT: 30/30
+
+
+KEYWORDS (100 characters max):
+-------------------------------
+men,fashion,style,outfit,clothing,stylist,tailor,sizing,wardrobe,fit,shopping,ai,personal,recommendations
+
+CHARACTER COUNT: 99/100
+
+KEYWORD BREAKDOWN:
+- men (target audience)
+- fashion, style, clothing (core category)
+- outfit, wardrobe, closet (main features)
+- stylist, tailor (service type)
+- sizing, fit (practical benefit)
+- shopping (action)
+- ai, personal (differentiators)
+- recommendations (value prop)
+
+
+PROMOTIONAL TEXT (170 characters max - Optional):
+-------------------------------------------------
+Get instant style advice from your AI tailor. Snap photos, get outfit recommendations, and never guess your size again. Free to try, premium unlocks unlimited features.
+
+CHARACTER COUNT: 169/170
+
+
+WHAT'S NEW (4000 characters max - For updates):
+------------------------------------------------
+(Leave blank for initial submission)
+
+
+APP DESCRIPTION:
+---------------
+(Use the content from APP_STORE_DESCRIPTION_OPTIMIZED.txt)
+
+
+ASO STRATEGY NOTES:
+-------------------
+1. App Name: Short and keyword-rich. "AI Tailor" are high-value search terms.
+
+2. Subtitle: Maximizes keyword coverage. "Men's Style & Outfit Assistant" includes:
+   - Men's (target audience)
+   - Style (high-volume search term)
+   - Outfit (core feature)
+   - Assistant (service type)
+
+3. Keywords: Prioritized by search volume and relevance:
+   - High volume: men, fashion, style, outfit
+   - Medium volume: clothing, wardrobe, shopping
+   - Low competition: tailor, sizing, fit
+   - Differentiators: ai, personal
+
+4. Description: Optimized for conversion, not ranking. Focuses on:
+   - Clear value proposition
+   - Feature benefits
+   - Social proof (free tier)
+   - Clear call to action
+
+5. Search Ranking Factors (in order of importance):
+   - App Name (highest weight)
+   - Subtitle (high weight)
+   - Keywords (high weight)
+   - Downloads/ratings (algorithmic)
+   - Description (conversion only, not ranking)
+
+NEXT STEPS:
+-----------
+1. Use "GAUGE AI Tailor" as app name
+2. Use "Men's Style & Outfit Assistant" as subtitle
+3. Enter keywords exactly as shown
+4. Copy description from APP_STORE_DESCRIPTION_OPTIMIZED.txt
+5. Add promotional text if desired
+6. Submit for review
+

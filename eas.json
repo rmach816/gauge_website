@@ -7,7 +7,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "simulator": true
+        "simulator": false
       },
       "android": {
         "buildType": "apk"
@@ -30,9 +30,9 @@
         "buildType": "apk"
       },
       "env": {
-        "ANTHROPIC_API_KEY": "production_key_here",
-        "AMAZON_AFFILIATE_TAG": "production_tag_here",
-        "NORDSTROM_AFFILIATE_ID": "production_id_here"
+        "ANTHROPIC_API_KEY": "@anthropic_api_key",
+        "AMAZON_AFFILIATE_TAG": "@amazon_affiliate_tag",
+        "NORDSTROM_AFFILIATE_ID": "@nordstrom_affiliate_id"
       }
     },
     "production-test": {
@@ -43,18 +43,18 @@
         "buildType": "apk"
       },
       "env": {
-        "ANTHROPIC_API_KEY": "production_key_here",
-        "AMAZON_AFFILIATE_TAG": "production_tag_here",
-        "NORDSTROM_AFFILIATE_ID": "production_id_here"
+        "ANTHROPIC_API_KEY": "@anthropic_api_key",
+        "AMAZON_AFFILIATE_TAG": "@amazon_affiliate_tag",
+        "NORDSTROM_AFFILIATE_ID": "@nordstrom_affiliate_id"
       }
     }
   },
   "submit": {
     "production": {
       "ios": {
-        "appleId": "your_apple_id@example.com",
-        "ascAppId": "your_app_store_connect_app_id",
-        "appleTeamId": "your_team_id"
+        "appleId": "admin@billsnap.online",
+        "ascAppId": "6755077953",
+        "appleTeamId": "K7FD7W8QQ5"
       },
       "android": {
         "serviceAccountKeyPath": "./path/to/api-key.json",

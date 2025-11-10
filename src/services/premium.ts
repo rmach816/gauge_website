@@ -61,5 +61,39 @@ export const PremiumService = {
       checksRemaining: FREE_TIER_CHECKS,
     });
   },
+
+  /**
+   * Get free chat message status
+   * Free users get 3 trial conversations before paywall
+   */
+  async getFreeChatStatus(): Promise<{
+    messagesUsed: number;
+    messagesRemaining: number;
+    canUseFreeMessage: boolean;
+  }> {
+    const status = await StorageService.getPremiumStatus();
+    const FREE_CHAT_LIMIT = 3;
+    const messagesUsed = status.freeChatMessagesUsed || 0;
+    const messagesRemaining = Math.max(0, FREE_CHAT_LIMIT - messagesUsed);
+    
+    return {
+      messagesUsed,
+      messagesRemaining,
+      canUseFreeMessage: !status.isPremium && messagesRemaining > 0,
+    };
+  },
+
+  /**
+   * Mark free chat message as used
+   * Increments the counter for free chat messages
+   */
+  async markFreeChatMessageUsed(): Promise<void> {
+    const status = await StorageService.getPremiumStatus();
+    const currentCount = status.freeChatMessagesUsed || 0;
+    await StorageService.savePremiumStatus({
+      ...status,
+      freeChatMessagesUsed: currentCount + 1,
+    });
+  },
 };
 

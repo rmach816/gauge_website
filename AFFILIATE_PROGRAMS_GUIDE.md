@@ -3,17 +3,18 @@
 ## Currently Integrated (Ready to Use)
 
 ### 1. **Amazon Associates** ✅
-**Status:** Already implemented in code  
+**Status:** ✅ **APPROVED - Ready to use!**  
+**Your Associate ID:** `gaugeapp-20`  
 **Sign up:** https://affiliate-program.amazon.com/  
 **Commission:** 1-10% depending on category  
 **Requirements:** 
 - Website/app with traffic
 - Tax information
 - Payment details
-**How to get your tag:**
-1. Sign up at Amazon Associates
-2. Get your Associate Tag (format: `yourname-20`)
-3. Set in `.env`: `AMAZON_AFFILIATE_TAG=yourname-20`
+**Setup:**
+1. ✅ Account approved - Associate ID: `gaugeapp-20`
+2. Set in `.env`: `AMAZON_AFFILIATE_TAG=gaugeapp-20`
+3. For EAS builds, set secret: `eas secret:create --scope project --name amazon_affiliate_tag --value gaugeapp-20`
 
 **Pros:** 
 - Massive product selection

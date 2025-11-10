@@ -1,0 +1,60 @@
+APP STORE OPTIMIZATION GUIDE FOR GAUGE
+========================================
+
+APP NAME (30 characters max - HIGHEST ASO WEIGHT)
+---------------------------------------------------
+Current: "GAUGE - Your Personal AI Tailor" (33 chars - TOO LONG)
+
+OPTION 1 (Recommended): "GAUGE AI Tailor" (16 chars)
+- Short, memorable, includes key search terms "AI" and "Tailor"
+- Leaves room for subtitle to expand
+
+OPTION 2: "GAUGE: Personal Tailor" (24 chars)
+- More descriptive, still under limit
+
+OPTION 3: "GAUGE - AI Stylist" (19 chars)
+- Alternative keyword "Stylist" instead of "Tailor"
+
+RECOMMENDED: "GAUGE AI Tailor" (16 chars)
+
+
+SUBTITLE (30 characters max - HIGH ASO WEIGHT)
+----------------------------------------------
+This appears below your app name in search results. Use it for additional keywords.
+
+OPTION 1 (Recommended): "Men's Style & Outfit Assistant" (30 chars)
+- Includes: men's, style, outfit, assistant (all high-value keywords)
+
+OPTION 2: "Personal Stylist for Men" (24 chars)
+- Direct, clear value prop
+
+OPTION 3: "AI Fashion & Size Guide" (24 chars)
+- Emphasizes AI and practical benefits
+
+RECOMMENDED: "Men's Style & Outfit Assistant" (30 chars)
+
+
+KEYWORDS (100 characters max - HIGH ASO WEIGHT)
+------------------------------------------------
+Separate keywords with commas. No spaces after commas. Apple removes duplicates and common words.
+
+OPTIMIZED KEYWORD STRING (99 chars):
+men,fashion,style,outfit,clothing,stylist,tailor,sizing,wardrobe,fit,shopping,ai,personal,recommendations
+
+Alternative (if you want different focus):
+menswear,style,outfit,builder,wardrobe,closet,sizing,fit,shopping,stylist,ai,fashion,clothing,guide
+
+KEYWORD STRATEGY:
+- Include: men, fashion, style, outfit, wardrobe, sizing, stylist, tailor, ai
+- Avoid: common words (the, a, an, and, or)
+- No brand names or competitor names
+- Think like your users: what would they search?
+
+
+APP DESCRIPTION (4000 chars max - CONVERSION, NOT RANKING)
+-----------------------------------------------------------
+The description doesn't affect search ranking but is CRITICAL for conversion. 
+Users read this after finding you. Make it compelling and action-oriented.
+
+OPTIMIZED DESCRIPTION BELOW...
+

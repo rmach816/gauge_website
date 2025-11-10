@@ -1,0 +1,44 @@
+WHAT TO TEST GAUGE App
+
+PRIORITY TESTING
+
+1. SHOPPING FEATURE
+   Build an outfit or use Shop for Item from results
+   Test Show More Retailers button rotates through 9 to 10 retailers
+   Click Shop Now and verify links open in browser
+   If a retailer link does not work like J Crew use Share Copy search term button
+   Verify search terms are specific for example men sweater gray crew neck
+   Check size recommendations are correct 42 inch chest at 5 foot 9 equals Medium not Large
+
+2. SIZE RECOMMENDATIONS
+   Dress shirts should show neck and sleeve for example 15.5 slash 34
+   Casual shirts should show S M L based on chest size
+   At 5 foot 9 with 42 inch chest should show M Medium not L
+
+3. VIRTUAL TAILOR CHAT
+   Ask What are my measurements and it should show ALL measurements
+   Verify AI uses your measurements for sizing suggestions
+   Test New Chat button in top right
+   Try photo uploads
+   Check free trial banner shows 3 conversations
+
+4. ONBOARDING AND NAVIGATION
+   Complete onboarding flow Measurements then Shoe Size then Style Preferences
+   Verify Skip for Now bypasses onboarding
+   Test Settings then Edit preferences should go back not continue onboarding
+   Check all 5 style preferences work including new Street option
+
+5. WARDROBE
+   Add items via camera or library
+   Test all categories Shirts Pants Jackets Shoes Hats Accessories
+   Search and filter functionality
+
+CRITICAL ISSUES TO REPORT
+   App crashes
+   AI not using measurements
+   Size recommendations way off
+   Shopping links completely broken
+   Navigation loops
+   Data loss
+
+Please test on both iOS and Android if possible. Report any issues with steps to reproduce and screenshots if helpful.

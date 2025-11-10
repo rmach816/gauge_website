@@ -1,123 +1,135 @@
-# GAUGE - Men's Style Assistant
+# GAUGE Website
 
-An AI-powered mobile app for men's style matching, fit recommendations, and shopping assistance built with React Native and Expo.
+Landing page website for the GAUGE mobile app - Your Personal AI Tailor.
+
+## Overview
+
+This is a sophisticated, responsive landing page that matches the GAUGE app's premium design system. The website features:
+
+- **Modern Design**: Matches the app's wood-toned, gold-accented aesthetic
+- **Fully Responsive**: Works beautifully on desktop, tablet, and mobile devices
+- **Legal Compliance**: Privacy Policy and Terms of Service meeting Apple and Google requirements
+- **Smooth Animations**: Fade-in effects and smooth scrolling
+- **SEO Optimized**: Proper meta tags and semantic HTML
+
+## Files
+
+- `index.html` - Main landing page with hero, features, pricing, and download sections
+- `styles.css` - Complete stylesheet matching the app's design system
+- `script.js` - JavaScript for interactivity and animations
+- `privacy-policy.html` - Comprehensive privacy policy (Apple & Google compliant)
+- `terms-of-service.html` - Complete terms of service (Apple & Google compliant)
+- `logo.png` - GAUGE logo image (required - add your logo file)
+
+## Design System
+
+The website uses the same design tokens as the GAUGE app:
+
+- **Colors**: Wood tones (dark, medium), cream/ivory text, gold accents, navy text
+- **Typography**: Inter font family with consistent sizing
+- **Spacing**: Consistent spacing scale (xs, sm, md, lg, xl, xxl, xxxl)
+- **Components**: Buttons, cards, badges matching app style
 
 ## Features
 
-- **Instant Match Check** - Photo → AI analysis → Style feedback (✅⚠️❌)
-- **Measurement-Based Sizing** - Body measurements → Size recommendations per garment
-- **Occasion-Based Outfit Builder** - Select occasion/style → Complete outfit with shopping links
-- **Smart Closet** - Save wardrobe items → Match with new purchases
-- **Shopping Integration** - Affiliate links to Amazon, Nordstrom, J.Crew, Bonobos
-- **Freemium Model** - 10 free checks → $6.99/mo unlimited + measurements
+### Landing Page Sections
 
-## Tech Stack
+1. **Hero Section**: Eye-catching introduction with app mockup
+2. **Features**: 6 key features with icons and descriptions
+3. **How It Works**: 4-step process with visual guides
+4. **Pricing**: Free vs Premium comparison
+5. **Download**: App Store and Google Play CTAs
+6. **Footer**: Links to legal pages and contact info
 
-- **Expo SDK**: ~54.0.0
-- **React Native**: 0.81.5
-- **React**: 19.2.0
-- **TypeScript**: ^5.9.3
-- **Claude AI**: Anthropic SDK for style analysis
+### Legal Pages
 
-## Setup Instructions
+- **Privacy Policy**: Comprehensive policy covering:
+  - Data collection and usage
+  - AI processing (Anthropic Claude)
+  - User rights (GDPR, CCPA)
+  - Data security
+  - Third-party services
+  - Children's privacy
 
-### 1. Install Dependencies
+- **Terms of Service**: Complete terms covering:
+  - Service description
+  - Subscription terms
+  - User responsibilities
+  - Intellectual property
+  - Disclaimers and liability
+  - Dispute resolution
 
-```bash
-npm install
-```
+## Setup
 
-### 2. Configure Environment Variables
+1. Clone or download this repository
+2. Open `index.html` in a web browser
+3. For local development, use a simple HTTP server:
+   ```bash
+   # Python
+   python -m http.server 8000
+   
+   # Node.js
+   npx http-server
+   ```
 
-Create a `.env` file in the root directory:
+## Customization
 
-```
-ANTHROPIC_API_KEY=your_claude_api_key_here
-AMAZON_AFFILIATE_TAG=your_amazon_tag
-NORDSTROM_AFFILIATE_ID=your_nordstrom_id
-```
+### Add Logo
 
-### 3. Add Assets
+Add your GAUGE logo file:
+- Place `logo.png` in the root directory
+- Logo should be a PNG with transparent background
+- Recommended size: 64x64px to 128x128px (will be scaled to 32px height)
+- The logo should be the gold/bronze geometric symbol with "GAUGE" text
 
-Place the following files in the `assets/` folder:
-- `icon.png` - App icon (1024x1024px)
-- `splash.png` - Splash screen image
+### Update Screenshots
 
-### 4. Run the App
+Replace placeholder images with actual app screenshots:
+- Hero section: `https://via.placeholder.com/300x600/3E2723/F5F5DC?text=App+Screenshot+1`
+- How It Works steps: Update `src` attributes in step images
+- Download section: Update phone showcase images
 
-```bash
-# Start Expo development server
-npm start
+### Update Contact Information
 
-# Run on iOS
-npm run ios
+Replace placeholder emails in legal pages:
+- `privacy@gauge.app`
+- `support@gauge.app`
+- `legal@gauge.app`
 
-# Run on Android
-npm run android
-```
+### Update App Store Links
 
-## Project Structure
+Replace `#` placeholders in download buttons with actual App Store and Google Play links.
 
-```
-gauge/
-├── App.tsx                 # App entry point
-├── index.js                # Root component registration
-├── app.json                # Expo configuration
-├── package.json            # Dependencies
-├── tsconfig.json           # TypeScript configuration
-├── babel.config.js         # Babel configuration
-├── .env                    # Environment variables (create this)
-│
-├── src/
-│   ├── types/             # TypeScript type definitions
-│   ├── config/             # API and app configuration
-│   ├── utils/              # Constants, formatting helpers
-│   ├── services/           # Business logic services
-│   ├── components/         # Reusable UI components
-│   ├── screens/            # Screen components
-│   └── navigation/         # Navigation setup
-│
-└── assets/                 # App icons and splash screens
-```
+### Update Jurisdiction
 
-## Development Notes
+In `terms-of-service.html`, replace `[Your Jurisdiction]` and `[Arbitration Organization]` with your actual legal information.
 
-### Expo SDK 54 Features
-- New Architecture enabled by default (significant performance improvements)
-- React 19.2 included
-- Precompiled React Native for iOS (10x faster builds)
-- Android 16 & iOS 26 support
+## Browser Support
 
-### Important
-- Reanimated plugin is automatically handled by babel-preset-expo - do NOT add manually
-- All code is compatible with New Architecture
-- Use `react-native-safe-area-context` for safe areas
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
-## Testing Checklist
+## Deployment
 
-- [ ] Photo capture (camera + library)
-- [ ] Claude API integration
-- [ ] Match rating display
-- [ ] Size recommendations
-- [ ] Shopping links open correctly
-- [ ] Premium gate at 10 checks
-- [ ] Measurements save/load
-- [ ] Closet add/delete
-- [ ] History persistence
-- [ ] All navigation flows
+The website can be deployed to:
 
-## API Costs
+- **GitHub Pages**: Push to a `gh-pages` branch
+- **Netlify**: Drag and drop the folder
+- **Vercel**: Connect your repository
+- **Any static hosting**: Upload all files to your web server
 
-- Estimated cost: ~$0.016 per style check
-- Images are automatically compressed before sending
-- Monitor usage in production
+## Notes
 
-## Premium Features
-
-- Free tier: 10 checks
-- Premium: $6.99/month for unlimited checks + measurements
+- **Logo Required**: Add `logo.png` to the root directory (the website references it)
+- Placeholder screenshots use `via.placeholder.com` - replace with actual app screenshots
+- App Store and Google Play badges use official images from Apple and Google CDNs
+- Download badge links point to `#` - update with actual App Store and Google Play URLs
+- Email addresses are placeholders - update with your actual support emails
+- Legal pages reference jurisdiction placeholders - update with your actual legal information
 
 ## License
 
 Private - All rights reserved
-

@@ -1,0 +1,32 @@
+GAUGE Beta App Description
+
+GAUGE is your personal virtual tailor powered by AI. Get personalized clothing recommendations, outfit suggestions, and shopping links based on your exact measurements, style preferences, and wardrobe.
+
+Key Features
+
+Virtual Tailor Chat
+Ask your AI tailor anything about clothing, style, and fit. The tailor knows your measurements and provides personalized recommendations.
+
+Smart Size Recommendations
+Get accurate size suggestions for shirts, pants, jackets, and shoes based on your body measurements and height.
+
+Wardrobe Management
+Add items to your digital wardrobe by taking photos. Organize and search your clothing collection by category.
+
+Outfit Builder
+Build complete outfits for any occasion. Mix items from your wardrobe or get shopping suggestions for missing pieces.
+
+Shopping Integration
+Shop for recommended items across 10 major retailers including Amazon, Nordstrom, J Crew, Target, and more. Get direct links to products that match your style and size.
+
+Style Preferences
+Set your style preferences from Conservative to Street. The AI uses your preferences to make better recommendations.
+
+What to Expect in Beta
+
+This is an early version of GAUGE. Some features may have minor issues. Shopping links may occasionally require manual search. The AI is learning and improving with each update.
+
+Your feedback helps us improve GAUGE. Please report any issues you encounter, especially with size recommendations, shopping links, or the AI chat functionality.
+
+Thank you for testing GAUGE.
+

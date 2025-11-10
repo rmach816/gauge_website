@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Colors, Spacing, Typography, BorderRadius } from '../utils/constants';
+import { Icon, AppIcons } from './Icon';
 
 interface PhotoCaptureProps {
   onPhotoCaptured: (uri: string) => void;
@@ -43,10 +44,10 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
 
       setIsLoading(true);
       const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.8,
-        allowsEditing: true,
-        aspect: [4, 3],
+        mediaTypes: ['images'],
+        quality: 0.6, // Lower quality for faster processing
+        allowsEditing: false, // Skip editing for speed
+        exif: false, // Don't include EXIF data
       });
 
       if (!result.canceled && result.assets[0]) {
@@ -69,10 +70,10 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
 
       setIsLoading(true);
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.8,
-        allowsEditing: true,
-        aspect: [4, 3],
+        mediaTypes: ['images'],
+        quality: 0.6, // Lower quality for faster processing
+        allowsEditing: false, // Skip editing for speed
+        exif: false, // Don't include EXIF data
       });
 
       if (!result.canceled && result.assets[0]) {
@@ -132,7 +133,7 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
           onPress={showOptions}
           disabled={isLoading}
         >
-          <Text style={styles.icon}>📷</Text>
+          <Icon name={AppIcons.camera.name} size={20} color={Colors.cream} library={AppIcons.camera.library} />
           <Text style={styles.label}>
             {isLoading ? 'Loading...' : label}
           </Text>
