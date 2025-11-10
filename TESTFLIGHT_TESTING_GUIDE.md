@@ -167,5 +167,49 @@ The app is working correctly if:
 - ✅ All features are accessible and functional
 - ✅ No crashes or data loss
 
+---
+
+## 🆕 NEW FEATURES TO TEST (November 10, 2025)
+
+### **Enhanced Error Messages**
+When things go wrong, you should now see helpful, context-aware error messages:
+- **Test**: Turn on airplane mode → Try to generate outfit
+- **Expected**: "Can't connect to generate outfit. Check your internet and try again."
+- **Expected**: "Try Again" button appears (allows retry)
+
+### **Shoe Size Validation**
+The app now validates shoe size format:
+- **Test Valid Inputs**:
+  - Enter "10" → Should accept ✅
+  - Enter "10.5" → Should accept ✅
+  - Enter "10 1/2" → Should accept and convert to "10.5" ✅
+  - Enter "10½" → Should accept and convert to "10.5" ✅
+  
+- **Test Invalid Inputs**:
+  - Enter "ten" → Should show error: "Please enter a valid shoe size" ❌
+  - Enter "big" → Should show error ❌
+  - Enter "3" → Should show error: "Please enter a shoe size between 4 and 18" ❌
+  - Enter "19" → Should show error: "Please enter a shoe size between 4 and 18" ❌
+
+- **Test AI Chat**:
+  - After entering shoe size "10 1/2"
+  - Ask AI: "What's my shoe size?"
+  - Expected: AI should say "10.5" (normalized format)
+
+### **Input Length Limits**
+Some inputs now have character limits:
+- **Test**: In shoe size field, try typing more than 10 characters
+- **Expected**: Input stops accepting characters after 10
+
+---
+
+## 📝 Known Issues & Limitations
+
+- Shopping links may require copying and pasting in some apps
+- First-time onboarding might take 2-3 minutes
+- Photo uploads work best with good lighting
+
+---
+
 Thank you for your thorough testing! Your feedback helps make GAUGE better.
 

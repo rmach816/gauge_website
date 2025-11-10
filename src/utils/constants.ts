@@ -290,6 +290,26 @@ export const TailorGradients = {
 } as const;
 
 // ============================================
+// INPUT VALIDATION LIMITS
+// ============================================
+
+export const INPUT_LIMITS = {
+  // User profile
+  LAST_NAME: 50,
+  SHOE_SIZE: 10,
+  
+  // Closet items
+  BRAND: 100,
+  NOTES: 500,
+  
+  // Chat
+  CHAT_MESSAGE: 500,
+  
+  // Outfit notes
+  OUTFIT_NOTES: 1000,
+} as const;
+
+// ============================================
 // LEGACY EXPORTS (for backward compatibility during migration)
 // ============================================
 

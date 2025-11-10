@@ -25,6 +25,8 @@ import {
 import { RootStackParamList } from '../../types';
 import { OnboardingService } from '../../services/onboarding';
 import { StorageService } from '../../services/storage';
+import { ShoeSizeValidator } from '../../utils/validators';
+import { INPUT_LIMITS } from '../../utils/constants';
 
 type ShoeSizeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -69,22 +71,22 @@ export const ShoeSizeScreen: React.FC = () => {
   const handleContinue = async () => {
     const trimmedSize = shoeSize.trim();
     
-    if (!trimmedSize) {
-      setError('Please enter your shoe size');
-      return;
-    }
-
-    if (trimmedSize.length < 1) {
-      setError('Please enter a valid shoe size');
+    // Validate shoe size format
+    const validation = ShoeSizeValidator.validate(trimmedSize);
+    if (!validation.valid) {
+      setError(validation.error!);
       return;
     }
 
     setError('');
 
+    // Normalize shoe size to standard format (e.g., "10 1/2" → "10.5")
+    const normalizedSize = ShoeSizeValidator.normalize(trimmedSize);
+    
     // Save shoe size to onboarding state
     try {
       const state = await OnboardingService.getOnboardingState();
-      state.shoeSize = trimmedSize;
+      state.shoeSize = normalizedSize;
       await OnboardingService.saveOnboardingState(state);
 
       // Also save directly to user profile (for immediate access in Settings)
@@ -93,17 +95,17 @@ export const ShoeSizeScreen: React.FC = () => {
         const profile = await StorageService.getUserProfile();
         if (profile) {
           // Update existing profile, preserving measurements
-          profile.shoeSize = trimmedSize;
+          profile.shoeSize = normalizedSize;
           profile.updatedAt = new Date().toISOString();
           await StorageService.saveUserProfile(profile);
-          console.log('[ShoeSizeScreen] Updated existing profile, measurements preserved:', !!profile.measurements);
+          console.log('[ShoeSizeScreen] Updated existing profile with normalized size:', normalizedSize);
         } else {
           // Create profile if it doesn't exist
           // Get measurements from onboarding state to include them in new profile
           const onboardingState = await OnboardingService.getOnboardingState();
           const newProfile: any = {
             id: `user-${Date.now()}`,
-            shoeSize: trimmedSize,
+            shoeSize: normalizedSize,
             stylePreference: [],
             favoriteOccasions: [],
             createdAt: new Date().toISOString(),

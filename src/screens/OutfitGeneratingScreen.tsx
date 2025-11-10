@@ -16,6 +16,7 @@ import { ClaudeVisionService } from '../services/claude';
 import { StorageService } from '../services/storage';
 import { HistoryService } from '../services/history';
 import { validateApiKey } from '../config/api';
+import { getContextualError, ErrorContext } from '../utils/errorMessages';
 import {
   RootStackParamList,
   Occasion,
@@ -95,7 +96,11 @@ export const OutfitGeneratingScreen: React.FC = () => {
   const generateOutfit = async () => {
     try {
       if (!validateApiKey()) {
-        navigation.goBack();
+        Alert.alert(
+          'Configuration Error',
+          'Service configuration missing. Please contact support.',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
+        );
         return;
       }
 
@@ -163,16 +168,18 @@ export const OutfitGeneratingScreen: React.FC = () => {
       navigation.replace('Result', { checkId: outfitId });
     } catch (error) {
       console.error('[OutfitGeneratingScreen] Generation failed:', error);
-      // Show error and navigate back
+      const errorInfo = getContextualError(error, ErrorContext.OUTFIT_GENERATION);
+      
+      // Show context-aware error message with retry option if applicable
       Alert.alert(
-        'Generation Failed',
-        'Unable to generate outfit. Please try again.',
+        'Outfit Generation Failed',
+        errorInfo.userMessage,
         [
-          {
-            text: 'OK',
-            onPress: () => navigation.goBack(),
-          },
-        ]
+          errorInfo.retryable 
+            ? { text: 'Try Again', onPress: () => generateOutfit() }
+            : undefined,
+          { text: 'Go Back', onPress: () => navigation.goBack(), style: 'cancel' },
+        ].filter(Boolean) as any
       );
     }
   };
