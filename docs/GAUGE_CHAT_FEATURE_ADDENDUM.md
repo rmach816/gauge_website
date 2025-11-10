@@ -8,7 +8,7 @@
 
 **The Insight**: Users don't want rigid modes - they want a conversation with their tailor. "Hey, will this blazer match my gray pants?" is natural. Clicking through mode selection screens is not.
 
-**The Solution**: Premium users get unlimited chat sessions with their AI tailor, who knows their measurements, wardrobe, and style preferences. Free users get structured checks only.
+**The Solution**: Premium users get unlimited chat sessions with their AI tailor, who knows their measurements, wardrobe, and style preferences. Free users get 3 chat sessions to try the feature, plus structured checks.
 
 ---
 
@@ -99,8 +99,8 @@ Would you like outfit combinations using these shoes?"
 
 ### Premium Chat Feature
 
-**Access Level**: Premium Only ($6.99/month)
-**Free Tier**: Structured checks only, no chat access
+**Access Level**: Premium Only ($6.99/month) for unlimited sessions
+**Free Tier**: 3 chat sessions to try the feature, then upgrade required
 
 **What Premium Users Get**:
 - Unlimited chat sessions
@@ -844,24 +844,25 @@ const styles = StyleSheet.create({
 10. ✅ Session history
 
 **Free Tier Limitations**:
-- ❌ No chat access (paywall when attempting)
+- ✅ 3 chat sessions (limited access to try the feature)
 - ✅ 10 structured style checks (one-shot, no conversation)
-- ✅ Up to 20 wardrobe items
+- ✅ Up to 10 wardrobe items
 - ✅ Basic outfit builder (no conversation)
 - ❌ No favorite combinations
 
 ### Upgrade Prompts
 
-**When Free User Tries Chat**:
+**When Free User Exceeds 3 Chat Sessions**:
 ```
 [Premium Feature]
 
-"Chat with Your Tailor is available with Premium"
+"You've used all 3 free chat sessions"
 
-Ask questions naturally and get personalized advice:
-• "Will this blazer match my pants?"
-• "What should I wear to a wedding?"
-• "Help me shop for a new suit"
+Upgrade to Premium for unlimited chat with your tailor:
+• Ask unlimited questions
+• Get personalized advice anytime
+• Reference your wardrobe naturally
+• Multi-turn conversations
 
 Just like texting your personal tailor.
 
@@ -919,17 +920,17 @@ $6.99/month • Cancel anytime
 ```
 Download app → Onboarding → Home screen
   ↓
-Sees "Chat with Your Tailor" (Premium badge)
+Sees "Chat with Your Tailor" (3 free sessions available)
   ↓
-Clicks → Paywall → "Maybe later"
+Tries chat → Gets great personalized advice
   ↓
-Uses "Quick Style Check" (free)
+Uses 2nd chat session → Asks follow-up questions
   ↓
-Gets good result, uses 5 more checks
+Uses 3rd chat session → Loves the feature
   ↓
-Sees "Premium members can just chat..."
+Sees "You've used all 3 free chat sessions"
   ↓
-Converts to premium
+Converts to premium for unlimited access
 ```
 
 ### Premium User Journey
@@ -998,10 +999,12 @@ Builds relationship, stays subscribed
 - [ ] AI suggests shopping when appropriate
 
 **Premium Gates**:
-- [ ] Free users see paywall when opening chat
-- [ ] Premium users access chat immediately
+- [ ] Free users can start chat (3 sessions allowed)
+- [ ] Free users see paywall after 3 sessions are used
+- [ ] Chat session counter tracks free usage correctly
+- [ ] Premium users access chat immediately with unlimited sessions
 - [ ] Chat counts against premium status correctly
-- [ ] Downgraded users lose chat access
+- [ ] Downgraded users lose unlimited access (revert to 3 sessions)
 
 **Edge Cases**:
 - [ ] Very long messages (500 char limit)
@@ -1062,8 +1065,9 @@ Builds relationship, stays subscribed
 - Context retention accuracy (manual spot checks)
 
 **Premium Conversion**:
-- Chat paywall impression rate (free users who see it)
-- Chat-driven conversion rate (users who convert from chat paywall)
+- Free chat session usage rate (how many of 3 sessions are used)
+- Chat paywall impression rate (free users who see it after 3 sessions)
+- Chat-driven conversion rate (users who convert after trying free sessions)
 - Chat usage among premium users (active users using chat)
 
 ---
