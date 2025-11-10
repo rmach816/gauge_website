@@ -2,6 +2,8 @@
 
 Landing page website for the GAUGE mobile app - Your Personal AI Tailor.
 
+**Repository**: [https://github.com/rmach816/gauge_website](https://github.com/rmach816/gauge_website)
+
 ## Overview
 
 This is a sophisticated, responsive landing page that matches the GAUGE app's premium design system. The website features:
@@ -61,7 +63,11 @@ The website uses the same design tokens as the GAUGE app:
 
 ## Setup
 
-1. Clone or download this repository
+1. Clone or download this repository:
+   ```bash
+   git clone https://github.com/rmach816/gauge_website.git
+   cd gauge_website
+   ```
 2. Open `index.html` in a web browser
 3. For local development, use a simple HTTP server:
    ```bash
