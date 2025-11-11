@@ -776,6 +776,20 @@ body {
     font-size: var(--font-size-caption);
 }
 
+.footer-description {
+    color: var(--ivory);
+    font-size: var(--font-size-caption);
+    line-height: 1.6;
+    max-width: 400px;
+    margin-top: var(--spacing-md);
+    opacity: 0.9;
+}
+
+.footer-description strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
 .footer-links {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
