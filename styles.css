@@ -1,13 +1,13 @@
 /* ============================================
    GAUGE Website - Design System
-   Matching app's Tailor Design System
+   Matching app's Modern Design System
    ============================================ */
 
 :root {
-    /* Color Palette - Matching App */
-    --wood-dark: #3E2723;
-    --wood-medium: #5D4037;
-    --wood-light: #8D6E63;
+    /* Color Palette - Modern Theme */
+    --charcoal-dark: #1E1E1E;
+    --slate-medium: #2A2A2A;
+    --graphite-light: #404040;
     --cream: #F5F5DC;
     --ivory: #FFF8DC;
     --parchment: #FDF6E3;
@@ -24,6 +24,11 @@
     --gray-dark: #505050;
     --white: #FFFFFF;
     --black: #000000;
+    
+    /* Legacy aliases for backward compatibility */
+    --wood-dark: #1E1E1E;
+    --wood-medium: #2A2A2A;
+    --wood-light: #404040;
 
     /* Spacing */
     --spacing-xs: 4px;
@@ -75,8 +80,8 @@ body {
     font-family: var(--font-family);
     font-size: var(--font-size-body);
     line-height: 1.6;
-    color: var(--navy);
-    background: linear-gradient(180deg, var(--wood-dark) 0%, #1A0F0A 100%);
+    color: var(--cream);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0D0D0D 100%);
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -757,6 +762,20 @@ body {
 .footer-tagline {
     color: var(--ivory);
     font-size: var(--font-size-caption);
+}
+
+.footer-description {
+    color: var(--ivory);
+    font-size: var(--font-size-caption);
+    line-height: 1.6;
+    max-width: 400px;
+    margin-top: var(--spacing-md);
+    opacity: 0.9;
+}
+
+.footer-description strong {
+    color: var(--gold);
+    font-weight: 600;
 }
 
 .footer-links {
