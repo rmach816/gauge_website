@@ -607,6 +607,15 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.premium-badge-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
 }
 
 .pricing-header {
