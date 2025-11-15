@@ -295,8 +295,12 @@ body {
     font-size: var(--font-size-caption);
 }
 
-.badge-icon {
-    font-size: 18px;
+.badge-icon,
+.badge i[data-feather] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    color: var(--color-gold);
 }
 
 .hero-image {
@@ -391,8 +395,11 @@ body {
     color: var(--cream);
 }
 
-.btn-icon {
-    font-size: 20px;
+.btn-icon,
+.btn i[data-feather] {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
 }
 
 /* ============================================
@@ -445,9 +452,18 @@ body {
 }
 
 .feature-icon {
-    font-size: 48px;
+    width: 48px;
+    height: 48px;
     margin-bottom: var(--spacing-md);
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gold);
+}
+
+.feature-icon i[data-feather] {
+    width: 48px;
+    height: 48px;
 }
 
 .feature-title {
