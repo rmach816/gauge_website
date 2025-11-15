@@ -101,7 +101,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(62, 39, 35, 0.95);
+    background: rgba(30, 30, 30, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: var(--spacing-md) 0;
@@ -226,7 +226,7 @@ body {
 
 .hero {
     padding: 120px 0 var(--spacing-xxxl);
-    background: linear-gradient(180deg, var(--wood-dark) 0%, #1A0F0A 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0D0D0D 100%);
     position: relative;
     overflow: hidden;
 }
@@ -666,7 +666,7 @@ body {
 
 .download {
     padding: var(--spacing-xxxl) 0;
-    background: linear-gradient(180deg, var(--wood-dark) 0%, #1A0F0A 100%);
+    background: linear-gradient(180deg, var(--charcoal-dark) 0%, #0D0D0D 100%);
     color: var(--cream);
 }
 
