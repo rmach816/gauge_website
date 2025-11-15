@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentScroll = window.pageYOffset;
         
         if (currentScroll > 100) {
-            navbar.style.background = 'rgba(62, 39, 35, 0.98)';
+            navbar.style.background = 'rgba(30, 30, 30, 0.98)';
             navbar.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.2)';
         } else {
-            navbar.style.background = 'rgba(62, 39, 35, 0.95)';
+            navbar.style.background = 'rgba(30, 30, 30, 0.95)';
             navbar.style.boxShadow = 'none';
         }
         
