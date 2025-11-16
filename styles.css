@@ -665,6 +665,53 @@ body {
 }
 
 /* ============================================
+   About Section
+   ============================================ */
+
+.about {
+    padding: var(--spacing-xxxl) 0;
+    background: var(--charcoal-dark);
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-text {
+    background: var(--slate-medium);
+    padding: var(--spacing-xxl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-medium);
+    border-left: 4px solid var(--gold);
+}
+
+.about-text p {
+    font-size: var(--font-size-body);
+    line-height: 1.8;
+    color: var(--white);
+    margin-bottom: var(--spacing-md);
+}
+
+.about-text p strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.about-text .about-closing {
+    margin-top: var(--spacing-xl);
+    font-size: var(--font-size-h3);
+    text-align: center;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--graphite-light);
+}
+
+.about-text .about-closing strong {
+    color: var(--gold);
+    font-weight: 700;
+}
+
+/* ============================================
    Download Section
    ============================================ */
 
